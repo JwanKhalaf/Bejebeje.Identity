@@ -4,15 +4,23 @@ using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Security.Claims;
 
 namespace Bejebeje.Identity.Data
 {
-  public class SeedData
+  public class DataSeeder
   {
-    public static void EnsureDataIsSeeded(InitialSeedConfiguration seedConfiguration)
+    private InitialSeedConfiguration seedConfiguration { get; set; }
+
+    public DataSeeder(IOptions<InitialSeedConfiguration> initialSeedConfiguration)
+    {
+      seedConfiguration = initialSeedConfiguration.Value;
+    }
+
+    public void EnsureDataIsSeeded()
     {
       ServiceCollection services = new ServiceCollection();
 
@@ -46,7 +54,10 @@ namespace Bejebeje.Identity.Data
           {
             seedUser = new BejebejeUser
             {
-              UserName = seedConfiguration.Username
+              UserName = seedConfiguration.Username,
+              Email = seedConfiguration.Email,
+              EmailConfirmed = true,
+              DisplayUsername = seedConfiguration.FirstName
             };
 
             IdentityResult result = userManager

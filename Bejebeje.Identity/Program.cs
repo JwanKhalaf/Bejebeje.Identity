@@ -23,13 +23,17 @@ namespace Bejebeje.Identity
           .ToArray();
       }
 
-      var host = CreateWebHostBuilder(args).Build();
+      IWebHost host = CreateWebHostBuilder(args).Build();
 
       if (seedIsRequested)
       {
-        var config = host.Services.GetRequiredService<IConfiguration>();
-        var connectionString = config.GetConnectionString("DefaultConnection");
-        SeedData.EnsureDataIsSeeded(connectionString);
+        IConfiguration config = host
+          .Services
+          .GetRequiredService<IConfiguration>();
+
+        DataSeeder dataSeeder = host.Services.GetRequiredService<DataSeeder>();
+
+        dataSeeder.EnsureDataIsSeeded();
         return;
       }
 

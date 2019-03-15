@@ -41,11 +41,24 @@ namespace Bejebeje.Identity
           .AddMvc()
           .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+      services
+        .AddSingleton<DataSeeder>();
+
+      services
+        .AddOptions();
+
       services.Configure<IISOptions>(iis =>
       {
         iis.AuthenticationDisplayName = "Windows";
         iis.AutomaticAuthentication = false;
       });
+
+      services
+        .Configure<InitialSeedConfiguration>(Configuration.GetSection(nameof(InitialSeedConfiguration)))
+        .Configure<InitialSeedConfiguration>(c =>
+        {
+          c.ConnectionString = Configuration["Database:DefaultConnectionString"];
+        });
 
       var builder = services
         .AddIdentityServer(options => 
@@ -79,6 +92,8 @@ namespace Bejebeje.Identity
           options.ClientId = "copy client ID from Google here";
           options.ClientSecret = "copy client secret from Google here";
         });
+
+      
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
