@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore;
+﻿using Bejebeje.Identity.Data;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
+using System.Linq;
 
 namespace Bejebeje.Identity
 {
@@ -10,9 +14,26 @@ namespace Bejebeje.Identity
   {
     public static void Main(string[] args)
     {
-      CreateWebHostBuilder(args)
-        .Build()
-        .Run();
+      bool seedIsRequested = args.Any(x => x == "/seed");
+
+      if (seedIsRequested)
+      {
+        args = args
+          .Except(new string[] { "/seed" })
+          .ToArray();
+      }
+
+      var host = CreateWebHostBuilder(args).Build();
+
+      if (seedIsRequested)
+      {
+        var config = host.Services.GetRequiredService<IConfiguration>();
+        var connectionString = config.GetConnectionString("DefaultConnection");
+        SeedData.EnsureDataIsSeeded(connectionString);
+        return;
+      }
+
+      host.Run();
     }
 
     public static IWebHostBuilder CreateWebHostBuilder(string[] args)
