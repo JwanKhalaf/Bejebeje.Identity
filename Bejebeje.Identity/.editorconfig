@@ -1,2 +1,2 @@
-﻿[*.{cs,vb}]
+﻿[*.{cs,vb,cshtml}]
 indent_size = 2
