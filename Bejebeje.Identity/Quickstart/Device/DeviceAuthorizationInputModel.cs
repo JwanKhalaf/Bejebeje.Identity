@@ -4,8 +4,8 @@
 
 namespace Bejebeje.Identity.Device
 {
-    public class DeviceAuthorizationInputModel : ConsentInputModel
-    {
-        public string UserCode { get; set; }
-    }
+  public class DeviceAuthorizationInputModel : ConsentInputModel
+  {
+    public string UserCode { get; set; }
+  }
 }

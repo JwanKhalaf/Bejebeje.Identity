@@ -31,7 +31,9 @@ namespace Bejebeje.Identity
           .Services
           .GetRequiredService<IConfiguration>();
 
-        DataSeeder dataSeeder = host.Services.GetRequiredService<DataSeeder>();
+        DataSeeder dataSeeder = host
+          .Services
+          .GetRequiredService<DataSeeder>();
 
         dataSeeder.EnsureDataIsSeeded();
         return;

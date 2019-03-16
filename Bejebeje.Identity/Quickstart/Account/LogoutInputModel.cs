@@ -4,8 +4,8 @@
 
 namespace Bejebeje.Identity
 {
-    public class LogoutInputModel
-    {
-        public string LogoutId { get; set; }
-    }
+  public class LogoutInputModel
+  {
+    public string LogoutId { get; set; }
+  }
 }
