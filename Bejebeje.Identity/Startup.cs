@@ -30,7 +30,7 @@ namespace Bejebeje.Identity
     public void ConfigureServices(IServiceCollection services)
     {
       services
-          .AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+          .AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(Configuration["Database:DefaultConnectionString"]));
 
       services
           .AddIdentity<BejebejeUser, IdentityRole>()
