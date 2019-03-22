@@ -9,7 +9,7 @@ WORKDIR /app
 # we now copy the .csproj file (from local machine) to /app (in the container).
 COPY *.csproj ./
 
-# On the container (we are in /app folder) we restore the project to get
+# on the container (we are in /app folder) we restore the project to get
 # all the referenced nuget packages.
 RUN dotnet restore Bejebeje.Identity.csproj
 
@@ -17,12 +17,33 @@ RUN dotnet restore Bejebeje.Identity.csproj
 # we now copy all the files (from local machine) to /app (in the container).
 COPY . ./
 
-# And again, on the container (we are in /app folder)
+# and again, on the container (we are in /app folder)
 # we now publish the project into a folder called 'out'.
 RUN dotnet publish Bejebeje.Identity.csproj -c Release -o out
 
 # set base image as the dotnet 2.2 runtime.
 FROM microsoft/dotnet:2.2-aspnetcore-runtime AS runtime
+
+# an environmental variable for the seed user website.
+ENV InitialSeedConfiguration__Website=https://www.code-hound.com
+
+# an environmental variable for the seed user username.
+ENV InitialSeedConfiguration__Username=jwan
+
+# an environmental variable for the seed user password.
+ENV InitialSeedConfiguration__Password=Password123!
+
+# an environmental variable for the seed user's last name.
+ENV InitialSeedConfiguration__LastName=Doe
+
+# an environmental variable for the seed user's first name.
+ENV InitialSeedConfiguration__FirstName=Jwan
+
+# an environmental variable for the seed user's email.
+ENV InitialSeedConfiguration__Email=j.khalaf@example.com
+
+# an environmental variable for the database connection string.
+ENV Database__DefaultConnectionString=Server=database;Port=5432;Database=bejebeje_identity;User Id=postgres;Password=admin;
 
 # set the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD
 # instructions that follows the WORKDIR instruction.

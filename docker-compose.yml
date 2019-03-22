@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   bejebeje-identity:
@@ -17,6 +17,9 @@ services:
       - "8001:5432"
     volumes:
       - data-volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: bejebeje_identity
 
 volumes:
   data-volume:
