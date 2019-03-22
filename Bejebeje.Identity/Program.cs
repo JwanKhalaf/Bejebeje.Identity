@@ -36,7 +36,6 @@ namespace Bejebeje.Identity
           .GetRequiredService<DataSeeder>();
 
         dataSeeder.EnsureDataIsSeeded();
-        return;
       }
 
       host.Run();
