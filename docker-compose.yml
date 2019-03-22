@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  bejebeje-identity:
+    build:
+      context: ./Bejebeje.Identity
+      labels:
+        com.bejebeje.description: "Bejebeje's Identity Server"
+    image: bejebeje-identity:latest
+    ports:
+      - "80:5000"
+    depends_on:
+      - database
+  database:
+    image: postgres
+    ports:
+      - "8001:5432"
+    
