@@ -25,7 +25,7 @@ WORKDIR /app
 
 # copy the contents of /app/out in the `build-env` and paste it in the
 # `/app` directory.
-COPY - from=build-env /app/out .
+COPY --from=build-env /app/out .
 
 # set the entry point into the application.
 ENTRYPOINT ["dotnet", "Bejebeje.Identity.dll"]
