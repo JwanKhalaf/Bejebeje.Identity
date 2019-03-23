@@ -71,16 +71,8 @@ namespace Bejebeje.Identity
         .AddInMemoryIdentityResources(Config.GetIdentityResources())
         .AddInMemoryApiResources(Config.GetApis())
         .AddInMemoryClients(Config.GetClients())
-        .AddAspNetIdentity<BejebejeUser>();
-
-      if (Environment.IsDevelopment())
-      {
-        builder.AddDeveloperSigningCredential();
-      }
-      else
-      {
-        throw new Exception("need to configure key material");
-      }
+        .AddAspNetIdentity<BejebejeUser>()
+        .AddDeveloperSigningCredential();
 
       services
         .AddAuthentication()
