@@ -42,8 +42,8 @@ ENV InitialSeedConfiguration__FirstName=Jwan
 # an environmental variable for the seed user's email.
 ENV InitialSeedConfiguration__Email=j.khalaf@example.com
 
-# an environmental variable for the database connection string.
-ENV Database__DefaultConnectionString=Server=database;Port=5432;Database=bejebeje_identity;User Id=postgres;Password=admin;
+# telling the application what port to run on.
+ENV ASPNETCORE_URLS=http://*:5000
 
 # set the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD
 # instructions that follows the WORKDIR instruction.
@@ -54,4 +54,4 @@ WORKDIR /app
 COPY --from=build-env /app/out .
 
 # set the entry point into the application.
-ENTRYPOINT ["dotnet", "Bejebeje.Identity.dll"]
+ENTRYPOINT ["dotnet", "Bejebeje.Identity.dll", "/seed"]
