@@ -16,10 +16,10 @@ esac
 docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
 # build the docker image.
-docker build -f ./Bejebeje.Identity/Dockerfile.$DOCKER_ENV -t bejebeje/identity:$DOCKER_TAG ./Bejebeje.Identity --no-cache
+docker build -f ./Bejebeje.Identity/Dockerfile.$DOCKER_ENV -t bejebeje-identity:$DOCKER_TAG ./Bejebeje.Identity --no-cache
 
 # tag the docker image.
-docker tag bejebeje/identity:$DOCKER_TAG $DOCKER_USERNAME/bejebeje/identity:$DOCKER_TAG
+docker tag bejebeje-identity:$DOCKER_TAG $DOCKER_USERNAME/bejebeje-identity:$DOCKER_TAG
 
 # push the docker image to docker hub.
-docker push $DOCKER_USERNAME/bejebeje/identity:$DOCKER_TAG
+docker push $DOCKER_USERNAME/bejebeje-identity:$DOCKER_TAG
