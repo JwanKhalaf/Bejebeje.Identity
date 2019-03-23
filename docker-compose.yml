@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  bejebeje-identity:
+    build:
+      context: ./Bejebeje.Identity
+      labels:
+        com.bejebeje.description: "Bejebeje's Identity Server"
+    image: bejebeje-identity:latest
+    ports:
+      - "80:5000"
+    environment:
+      Database__DefaultConnectionString: "Server=database;Port=5432;Database=bejebeje_identity;User Id=postgres;Password=admin;"
+    depends_on:
+      - database
+  database:
+    image: postgres
+    ports:
+      - "8001:5432"
+    volumes:
+      - data-volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: bejebeje_identity
+
+volumes:
+  data-volume:
