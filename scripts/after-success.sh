@@ -4,4 +4,10 @@ chmod 600 ./deploy_key
 echo -e "Host $SERVER_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 ssh-add ./deploy_key
 # test ssh connection for: https://github.com/dwyl/learn-travis/issues/42
-ssh -i ./deploy_key $SERVER_USER@$SERVER_IP_ADDRESS pwd
+ssh -i ./deploy_key $SERVER_USER@$SERVER_IP_ADDRESS
+echo "Current working directory is:"
+pwd
+echo "running docker-compose down"
+docker-compose -f $DOCKER_COMPOSE_YML_PATH down
+echo "running docker-compose up"
+docker-compose -f $DOCKER_COMPOSE_YML_PATH up
