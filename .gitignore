@@ -328,4 +328,5 @@ ASALocalRun/
 *.nvuser
 
 # MFractors (Xamarin productivity tool) working folder 
-.mfractor/
+.mfractor/deploy_key
+deploy_key
