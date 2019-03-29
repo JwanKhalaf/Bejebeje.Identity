@@ -7,7 +7,6 @@ branches:
   only:
     - master
     - develop
-    - feature/travis-ci-build
 before_script:
   - chmod -R a+x scripts
 script:
