@@ -29,8 +29,10 @@ namespace Bejebeje.Identity
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      string databaseConnectionString = Configuration["Database:DefaultConnectionString"];
+
       services
-          .AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(Configuration["Database:DefaultConnectionString"]));
+          .AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(databaseConnectionString));
 
       services
           .AddIdentity<BejebejeUser, IdentityRole>()
@@ -57,7 +59,7 @@ namespace Bejebeje.Identity
         .Configure<InitialSeedConfiguration>(Configuration.GetSection(nameof(InitialSeedConfiguration)))
         .Configure<InitialSeedConfiguration>(c =>
         {
-          c.ConnectionString = Configuration["Database:DefaultConnectionString"];
+          c.ConnectionString = databaseConnectionString;
         });
 
       var builder = services
