@@ -19,9 +19,8 @@ services:
       - "8001:5432"
     volumes:
       - data-volume:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: bejebeje_identity
+    env_file:
+      - ./variables.env
 
 volumes:
   data-volume:
