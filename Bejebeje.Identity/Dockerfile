@@ -27,21 +27,6 @@ FROM microsoft/dotnet:2.2-aspnetcore-runtime AS runtime
 # an environmental variable for the seed user website.
 ENV InitialSeedConfiguration__Website=https://www.code-hound.com
 
-# an environmental variable for the seed user username.
-ENV InitialSeedConfiguration__Username=jwan
-
-# an environmental variable for the seed user password.
-ENV InitialSeedConfiguration__Password=Password123!
-
-# an environmental variable for the seed user's last name.
-ENV InitialSeedConfiguration__LastName=Doe
-
-# an environmental variable for the seed user's first name.
-ENV InitialSeedConfiguration__FirstName=Jwan
-
-# an environmental variable for the seed user's email.
-ENV InitialSeedConfiguration__Email=j.khalaf@example.com
-
 # telling the application what port to run on.
 ENV ASPNETCORE_URLS=http://*:5000
 
