@@ -9,14 +9,8 @@ services:
     image: bejebeje-identity:latest
     ports:
       - "5005:5000"
-    environment:
-      Database__DefaultConnectionString: "Server=database;Port=5432;Database=bejebeje_identity;User Id=postgres;Password=admin;"
-      InitialSeedConfiguration__Username: jwan
-      InitialSeedConfiguration__Password: Password123!
-      InitialSeedConfiguration__FirstName: Jwan
-      InitialSeedConfiguration__LastName: Khalaf
-      InitialSeedConfiguration__Email: jwan.khalaf@example.com
-      InitialSeedConfiguration__Website: https://www.code-hound.com
+    env_file:
+      ./variables.env
     depends_on:
       - database
   database:
