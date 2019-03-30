@@ -30,19 +30,25 @@ namespace Bejebeje.Identity.Configuration
         {
             ClientId = "bejebeje_react-spa",
             ClientName = "Bejebeje ReactJS SPA Client",
-            ClientUri = "http://identityserver.io",
             AllowedGrantTypes = GrantTypes.Implicit,
             AllowAccessTokensViaBrowser = true,
-            RedirectUris =
-            {
-                "http://localhost:5002/index.html",
-                "http://localhost:5002/callback.html",
-                "http://localhost:5002/silent.html",
-                "http://localhost:5002/popup.html",
-            },
-            PostLogoutRedirectUris = { "http://localhost:5002/index.html" },
-            AllowedCorsOrigins = { "http://localhost:5002" },
-            AllowedScopes = { "openid", "profile", "api1" }
+            RequireConsent = false,
+            RedirectUris = { "https://bejebeje.com/callback" },
+            PostLogoutRedirectUris = { "https://bejebeje.com" },
+            AllowedCorsOrigins = { "https://bejebeje.com" },
+            AllowedScopes = { "openid", "profile", "bejebeje_api" }
+        },
+        new Client
+        {
+            ClientId = "bejebeje_react-local",
+            ClientName = "Bejebeje ReactJS SPA Client",
+            AllowedGrantTypes = GrantTypes.Implicit,
+            AllowAccessTokensViaBrowser = true,
+            RequireConsent = false,
+            RedirectUris = { "https://localhost:1234/callback" },
+            PostLogoutRedirectUris = { "https://localhost:1234" },
+            AllowedCorsOrigins = { "https://localhost:1234" },
+            AllowedScopes = { "openid", "profile", "bejebeje_api" }
         }
       };
     }

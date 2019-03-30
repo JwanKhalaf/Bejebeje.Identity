@@ -8,6 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Bejebeje.Identity.Models;
 using Bejebeje.Identity.Configuration;
+using System.Reflection;
+using System.Linq;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
 
 namespace Bejebeje.Identity
 {
@@ -29,6 +33,7 @@ namespace Bejebeje.Identity
     public void ConfigureServices(IServiceCollection services)
     {
       string databaseConnectionString = Configuration["Database:DefaultConnectionString"];
+      string migrationAssemblyName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
       services
           .AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(databaseConnectionString));
@@ -62,16 +67,27 @@ namespace Bejebeje.Identity
         });
 
       var builder = services
-        .AddIdentityServer(options => 
+        .AddIdentityServer(options =>
         {
           options.Events.RaiseErrorEvents = true;
           options.Events.RaiseInformationEvents = true;
           options.Events.RaiseFailureEvents = true;
           options.Events.RaiseSuccessEvents = true;
         })
-        .AddInMemoryIdentityResources(Config.GetIdentityResources())
-        .AddInMemoryApiResources(Config.GetApis())
-        .AddInMemoryClients(Config.GetClients())
+        .AddConfigurationStore(options =>
+        {
+          options.ConfigureDbContext = b => b.UseNpgsql(
+            databaseConnectionString,
+            sql => sql.MigrationsAssembly(migrationAssemblyName));
+        })
+        .AddOperationalStore(options =>
+        {
+          options.ConfigureDbContext = b => b.UseNpgsql(
+            databaseConnectionString,
+            sql => sql.MigrationsAssembly(migrationAssemblyName));
+
+          options.EnableTokenCleanup = true;
+        })
         .AddAspNetIdentity<BejebejeUser>()
         .AddDeveloperSigningCredential();
 
@@ -90,6 +106,9 @@ namespace Bejebeje.Identity
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app)
     {
+      // this will do the initial DB population
+      InitializeDatabase(app);
+
       if (Environment.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
@@ -103,6 +122,51 @@ namespace Bejebeje.Identity
       app.UseStaticFiles();
       app.UseIdentityServer();
       app.UseMvcWithDefaultRoute();
+    }
+
+    private void InitializeDatabase(IApplicationBuilder app)
+    {
+      using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+      {
+        serviceScope
+          .ServiceProvider
+          .GetRequiredService<PersistedGrantDbContext>()
+          .Database
+          .Migrate();
+
+        var context = serviceScope
+          .ServiceProvider
+          .GetRequiredService<ConfigurationDbContext>();
+
+        context.Database.Migrate();
+
+        if (!context.Clients.Any())
+        {
+          foreach (var client in Config.GetClients())
+          {
+            context.Clients.Add(client.ToEntity());
+          }
+          context.SaveChanges();
+        }
+
+        if (!context.IdentityResources.Any())
+        {
+          foreach (var resource in Config.GetIdentityResources())
+          {
+            context.IdentityResources.Add(resource.ToEntity());
+          }
+          context.SaveChanges();
+        }
+
+        if (!context.ApiResources.Any())
+        {
+          foreach (var resource in Config.GetApis())
+          {
+            context.ApiResources.Add(resource.ToEntity());
+          }
+          context.SaveChanges();
+        }
+      }
     }
   }
 }
