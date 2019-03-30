@@ -3,10 +3,12 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 using System.Linq;
+using System.Net.Sockets;
 
 namespace Bejebeje.Identity
 {
@@ -35,7 +37,13 @@ namespace Bejebeje.Identity
           .Services
           .GetRequiredService<DataSeeder>();
 
-        dataSeeder.EnsureDataIsSeeded();
+        Policy
+          .Handle<SocketException>()
+          .Retry(5, onRetry: (exception, retryCount) =>
+          {
+            // do something 
+            dataSeeder.EnsureDataIsSeeded();
+          });
       }
 
       host.Run();

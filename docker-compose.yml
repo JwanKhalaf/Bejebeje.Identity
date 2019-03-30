@@ -10,7 +10,7 @@ services:
     ports:
       - "5005:5000"
     env_file:
-      ./variables.env
+      - ./variables.env
     depends_on:
       - database
   database:
