@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Bejebeje.Identity.Models;
 using Bejebeje.Identity.Configuration;
-using System;
 
 namespace Bejebeje.Identity
 {
