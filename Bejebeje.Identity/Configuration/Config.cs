@@ -1,11 +1,20 @@
 ﻿using IdentityServer4.Models;
 using System.Collections.Generic;
+using Bejebeje.Identity.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Bejebeje.Identity.Configuration
 {
-  public static class Config
+  public class Config
   {
-    public static IEnumerable<IdentityResource> GetIdentityResources()
+    private InitialIdentityServerConfiguration identityServerConfiguration { get; set; }
+
+    public Config(IOptions<InitialIdentityServerConfiguration> initialIdentityServerConfiguration)
+    {
+      identityServerConfiguration = initialIdentityServerConfiguration.Value;
+    }
+
+    public IEnumerable<IdentityResource> GetIdentityResources()
     {
       return new IdentityResource[]
       {
@@ -14,21 +23,21 @@ namespace Bejebeje.Identity.Configuration
       };
     }
 
-    public static IEnumerable<ApiResource> GetApis()
+    public IEnumerable<ApiResource> GetApis()
     {
       return new ApiResource[]
       {
-        new ApiResource("bejebeje_api", "Bejebeje API")
+        new ApiResource(identityServerConfiguration.ApiName, "Bejebeje API")
       };
     }
 
-    public static IEnumerable<Client> GetClients()
+    public IEnumerable<Client> GetClients()
     {
       return new[]
       {
         new Client
         {
-            ClientId = "bejebeje_react-spa",
+            ClientId = identityServerConfiguration.FrontendClientId,
             ClientName = "Bejebeje ReactJS SPA Client",
             AllowedGrantTypes = GrantTypes.Implicit,
             AllowAccessTokensViaBrowser = true,
@@ -36,7 +45,7 @@ namespace Bejebeje.Identity.Configuration
             RedirectUris = { "https://bejebeje.com/callback" },
             PostLogoutRedirectUris = { "https://bejebeje.com" },
             AllowedCorsOrigins = { "https://bejebeje.com" },
-            AllowedScopes = { "openid", "profile", "bejebeje_api" }
+            AllowedScopes = { "openid", "profile", identityServerConfiguration.ApiName }
         },
         new Client
         {
@@ -48,7 +57,7 @@ namespace Bejebeje.Identity.Configuration
             RedirectUris = { "https://localhost:1234/callback" },
             PostLogoutRedirectUris = { "https://localhost:1234" },
             AllowedCorsOrigins = { "https://localhost:1234" },
-            AllowedScopes = { "openid", "profile", "bejebeje_api" }
+            AllowedScopes = { "openid", "profile", identityServerConfiguration.ApiName }
         }
       };
     }

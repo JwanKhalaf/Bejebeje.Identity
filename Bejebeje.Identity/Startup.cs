@@ -49,6 +49,9 @@ namespace Bejebeje.Identity
 
       services
         .AddSingleton<DataSeeder>();
+      
+      services
+        .AddSingleton<Config>();
 
       services
         .AddOptions();
@@ -65,6 +68,9 @@ namespace Bejebeje.Identity
         {
           c.ConnectionString = databaseConnectionString;
         });
+
+      services
+        .Configure<InitialIdentityServerConfiguration>(Configuration.GetSection(nameof(InitialIdentityServerConfiguration)));
 
       var builder = services
         .AddIdentityServer(options =>
@@ -138,11 +144,13 @@ namespace Bejebeje.Identity
           .ServiceProvider
           .GetRequiredService<ConfigurationDbContext>();
 
+        Config identityServerConfiguration = serviceScope.ServiceProvider.GetRequiredService<Config>();
+
         context.Database.Migrate();
 
         if (!context.Clients.Any())
         {
-          foreach (var client in Config.GetClients())
+          foreach (var client in identityServerConfiguration.GetClients())
           {
             context.Clients.Add(client.ToEntity());
           }
@@ -151,7 +159,7 @@ namespace Bejebeje.Identity
 
         if (!context.IdentityResources.Any())
         {
-          foreach (var resource in Config.GetIdentityResources())
+          foreach (var resource in identityServerConfiguration.GetIdentityResources())
           {
             context.IdentityResources.Add(resource.ToEntity());
           }
@@ -160,7 +168,7 @@ namespace Bejebeje.Identity
 
         if (!context.ApiResources.Any())
         {
-          foreach (var resource in Config.GetApis())
+          foreach (var resource in identityServerConfiguration.GetApis())
           {
             context.ApiResources.Add(resource.ToEntity());
           }
