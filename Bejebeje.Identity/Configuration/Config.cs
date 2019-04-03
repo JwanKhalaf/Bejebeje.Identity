@@ -37,27 +37,27 @@ namespace Bejebeje.Identity.Configuration
       {
         new Client
         {
-            ClientId = identityServerConfiguration.FrontendClientId,
-            ClientName = "Bejebeje ReactJS SPA Client",
-            AllowedGrantTypes = GrantTypes.Implicit,
-            AllowAccessTokensViaBrowser = true,
-            RequireConsent = false,
-            RedirectUris = { "https://bejebeje.com/callback" },
-            PostLogoutRedirectUris = { "https://bejebeje.com" },
-            AllowedCorsOrigins = { "https://bejebeje.com" },
-            AllowedScopes = { "openid", "profile", identityServerConfiguration.ApiName }
+          ClientId = identityServerConfiguration.FrontendClientId,
+          ClientName = "Bejebeje ReactJS SPA Client",
+          AllowedGrantTypes = GrantTypes.Implicit,
+          AllowAccessTokensViaBrowser = true,
+          RequireConsent = false,
+          RedirectUris = { "https://bejebeje.com/callback" },
+          PostLogoutRedirectUris = { "https://bejebeje.com" },
+          AllowedCorsOrigins = { "https://bejebeje.com" },
+          AllowedScopes = { "openid", "profile", identityServerConfiguration.ApiName }
         },
         new Client
         {
-            ClientId = "bejebeje_react-local",
-            ClientName = "Bejebeje ReactJS SPA Client",
-            AllowedGrantTypes = GrantTypes.Implicit,
-            AllowAccessTokensViaBrowser = true,
-            RequireConsent = false,
-            RedirectUris = { "http://localhost:1234/callback" },
-            PostLogoutRedirectUris = { "http://localhost:1234" },
-            AllowedCorsOrigins = { "http://localhost:1234" },
-            AllowedScopes = { "openid", "profile", identityServerConfiguration.ApiName }
+          ClientId = "bejebeje_react-local",
+          ClientName = "Bejebeje ReactJS SPA Client",
+          AllowedGrantTypes = GrantTypes.Implicit,
+          AllowAccessTokensViaBrowser = true,
+          RequireConsent = false,
+          RedirectUris = { "http://localhost:1234/callback" },
+          PostLogoutRedirectUris = { "http://localhost:1234" },
+          AllowedCorsOrigins = { "http://localhost:1234" },
+          AllowedScopes = { "openid", "profile", identityServerConfiguration.ApiName }
         }
       };
     }
