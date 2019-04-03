@@ -54,9 +54,9 @@ namespace Bejebeje.Identity.Configuration
             AllowedGrantTypes = GrantTypes.Implicit,
             AllowAccessTokensViaBrowser = true,
             RequireConsent = false,
-            RedirectUris = { "https://localhost:1234/callback" },
-            PostLogoutRedirectUris = { "https://localhost:1234" },
-            AllowedCorsOrigins = { "https://localhost:1234" },
+            RedirectUris = { "http://localhost:1234/callback" },
+            PostLogoutRedirectUris = { "http://localhost:1234" },
+            AllowedCorsOrigins = { "http://localhost:1234" },
             AllowedScopes = { "openid", "profile", identityServerConfiguration.ApiName }
         }
       };
