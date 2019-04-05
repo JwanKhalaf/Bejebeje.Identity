@@ -94,8 +94,8 @@ namespace Bejebeje.Identity
 
           options.EnableTokenCleanup = true;
         })
-        .AddAspNetIdentity<BejebejeUser>()
-        .AddDeveloperSigningCredential();
+        .AddDeveloperSigningCredential()
+        .AddAspNetIdentity<BejebejeUser>();
 
       services
         .AddAuthentication()

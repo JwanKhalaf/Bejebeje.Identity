@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Bejebeje.Identity.Data.Migrations.IdentityServer.ConfigurationDb
+namespace Bejebeje.Identity.Migrations.ConfigurationDb
 {
     public partial class Initial : Migration
     {
