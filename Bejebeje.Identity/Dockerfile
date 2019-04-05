@@ -39,4 +39,4 @@ WORKDIR /app
 COPY --from=build-env /app/out .
 
 # set the entry point into the application.
-ENTRYPOINT ["dotnet", "Bejebeje.Identity.dll", "/seed"]
+ENTRYPOINT ["dotnet", "Bejebeje.Identity.dll", "-seed"]
