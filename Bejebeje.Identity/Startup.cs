@@ -86,6 +86,7 @@ namespace Bejebeje.Identity
             databaseConnectionString,
             sql => sql.MigrationsAssembly(migrationAssemblyName));
         })
+        .AddAspNetIdentity<BejebejeUser>()
         .AddOperationalStore(options =>
         {
           options.ConfigureDbContext = b => b.UseNpgsql(
@@ -94,7 +95,6 @@ namespace Bejebeje.Identity
 
           options.EnableTokenCleanup = true;
         })
-        .AddAspNetIdentity<BejebejeUser>()
         .AddDeveloperSigningCredential();
 
       services

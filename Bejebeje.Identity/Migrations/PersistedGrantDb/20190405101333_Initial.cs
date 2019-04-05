@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Bejebeje.Identity.Data.Migrations.IdentityServer.OperationDb
+namespace Bejebeje.Identity.Migrations.PersistedGrantDb
 {
     public partial class Initial : Migration
     {
