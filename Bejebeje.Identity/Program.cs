@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
+using Polly.Retry;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
+using System;
 using System.Linq;
 using System.Net.Sockets;
 
@@ -16,19 +18,25 @@ namespace Bejebeje.Identity
   {
     public static void Main(string[] args)
     {
-      bool seedIsRequested = args.Any(x => x == "/seed");
+      string possibleSeedArgument = "-seed";
+
+      bool seedIsRequested = args.Any(x => x == possibleSeedArgument);
 
       if (seedIsRequested)
       {
         args = args
-          .Except(new string[] { "/seed" })
+          .Except(new string[] { possibleSeedArgument })
           .ToArray();
+
+        Console.WriteLine("Seed argument catched.");
       }
 
       IWebHost host = CreateWebHostBuilder(args).Build();
 
       if (seedIsRequested)
       {
+        Console.WriteLine("Inside seed if statement.");
+
         IConfiguration config = host
           .Services
           .GetRequiredService<IConfiguration>();
@@ -37,13 +45,11 @@ namespace Bejebeje.Identity
           .Services
           .GetRequiredService<DataSeeder>();
 
-        Policy
+        RetryPolicy retryPolicy = Policy
           .Handle<SocketException>()
-          .Retry(5, onRetry: (exception, retryCount) =>
-          {
-            // do something 
-            dataSeeder.EnsureDataIsSeeded();
-          });
+          .Retry(5);
+
+        retryPolicy.Execute(() => dataSeeder.EnsureDataIsSeeded());
       }
 
       host.Run();
