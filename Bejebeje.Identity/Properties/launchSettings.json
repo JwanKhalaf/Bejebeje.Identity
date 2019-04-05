@@ -10,7 +10,7 @@
   "profiles": {
     "Bejebeje.Identity": {
       "commandName": "Project",
-      "commandLineArgs": "/seed",
+      "commandLineArgs": "-seed",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
