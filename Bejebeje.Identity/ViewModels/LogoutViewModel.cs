@@ -2,11 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-namespace IdentityServer4.Quickstart.UI
+namespace Bejebeje.Identity.ViewModels
 {
-    public class ExternalProvider
+    public class LogoutViewModel : LogoutInputModel
     {
-        public string DisplayName { get; set; }
-        public string AuthenticationScheme { get; set; }
+        public bool ShowLogoutPrompt { get; set; } = true;
     }
 }

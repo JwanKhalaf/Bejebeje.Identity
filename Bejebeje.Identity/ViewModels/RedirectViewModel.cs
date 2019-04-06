@@ -2,10 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-namespace Bejebeje.Identity
+
+namespace Bejebeje.Identity.ViewModels
 {
-  public class LogoutViewModel : LogoutInputModel
-  {
-    public bool ShowLogoutPrompt { get; set; } = true;
-  }
+    public class RedirectViewModel
+    {
+        public string RedirectUrl { get; set; }
+    }
 }

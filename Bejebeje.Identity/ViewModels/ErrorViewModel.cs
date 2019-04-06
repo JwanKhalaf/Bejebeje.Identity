@@ -4,10 +4,10 @@
 
 using IdentityServer4.Models;
 
-namespace Bejebeje.Identity
+namespace Bejebeje.Identity.ViewModels
 {
-  public class ErrorViewModel
-  {
-    public ErrorMessage Error { get; set; }
-  }
+    public class ErrorViewModel
+    {
+        public ErrorMessage Error { get; set; }
+    }
 }

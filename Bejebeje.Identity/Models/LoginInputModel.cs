@@ -2,15 +2,17 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace IdentityServer4.Quickstart.UI
 {
-    public class ConsentInputModel
+    public class LoginInputModel
     {
-        public string Button { get; set; }
-        public IEnumerable<string> ScopesConsented { get; set; }
-        public bool RememberConsent { get; set; }
+        [Required]
+        public string Username { get; set; }
+        [Required]
+        public string Password { get; set; }
+        public bool RememberLogin { get; set; }
         public string ReturnUrl { get; set; }
     }
 }
