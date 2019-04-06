@@ -49,7 +49,7 @@ namespace Bejebeje.Identity.Configuration
         },
         new Client
         {
-          ClientId = "bejebeje_react-local",
+          ClientId = "bejebeje-react-local",
           ClientName = "Bejebeje ReactJS SPA Client",
           AllowedGrantTypes = GrantTypes.Implicit,
           AllowAccessTokensViaBrowser = true,
