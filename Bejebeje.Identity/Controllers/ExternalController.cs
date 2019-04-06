@@ -1,6 +1,5 @@
 using IdentityModel;
 using IdentityServer4.Events;
-using IdentityServer4.Quickstart.UI;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Bejebeje.Identity.Models;
@@ -15,6 +14,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using Bejebeje.Identity.Filters;
+using Bejebeje.Identity.Options;
 
 namespace Bejebeje.Identity.Controllers
 {

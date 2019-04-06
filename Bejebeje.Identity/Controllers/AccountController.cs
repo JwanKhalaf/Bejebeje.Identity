@@ -13,6 +13,10 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Bejebeje.Identity.Filters;
+using Bejebeje.Identity.ViewModels;
+using Bejebeje.Identity.Extensions;
+using Bejebeje.Identity.Options;
 
 namespace Bejebeje.Identity.Controllers
 {

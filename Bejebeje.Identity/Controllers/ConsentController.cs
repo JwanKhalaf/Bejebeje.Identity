@@ -1,7 +1,3 @@
-// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
 using IdentityServer4.Events;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
@@ -12,6 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
+using Bejebeje.Identity.Filters;
+using Bejebeje.Identity.ViewModels;
+using Bejebeje.Identity.Models;
+using Bejebeje.Identity.Options;
+using Bejebeje.Identity.Extensions;
 
 namespace Bejebeje.Identity.Controllers
 {

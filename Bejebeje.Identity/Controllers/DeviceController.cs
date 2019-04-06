@@ -1,10 +1,11 @@
-// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Bejebeje.Identity.Filters;
+using Bejebeje.Identity.Models;
+using Bejebeje.Identity.Options;
+using Bejebeje.Identity.ViewModels;
+using IdentityServer4;
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
 using IdentityServer4.Models;
