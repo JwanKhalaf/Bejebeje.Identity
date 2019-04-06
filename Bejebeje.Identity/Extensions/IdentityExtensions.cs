@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using IdentityServer4.Stores;
 
-namespace IdentityServer4.Quickstart.UI
+namespace Bejebeje.Identity.Extensions
 {
-    public static class Extensions
+    public static class IdentityExtensions
     {
         /// <summary>
         /// Determines whether the client is configured to use PKCE.

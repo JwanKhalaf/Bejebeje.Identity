@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IdentityServer4.Quickstart.UI
+namespace Bejebeje.Identity.Options
 {
     public class AccountOptions
     {
