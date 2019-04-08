@@ -2,6 +2,18 @@
   height: 100vh;
 }
 
+.is-horizontally-centred {
+    justify-content: center;
+}
+
+.is-vertically-centred {
+    align-items: center;
+}
+
+.login-box {
+    width: 480px;
+}
+
 .logo {
   display: flex;
   justify-content: center;
