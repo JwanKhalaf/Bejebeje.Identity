@@ -1,6 +1,5 @@
 ﻿using IdentityServer4.Models;
 using System.Collections.Generic;
-using Bejebeje.Identity.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace Bejebeje.Identity.Configuration
@@ -27,7 +26,8 @@ namespace Bejebeje.Identity.Configuration
     {
       return new ApiResource[]
       {
-        new ApiResource(identityServerConfiguration.ApiName, "Bejebeje API")
+        new ApiResource(identityServerConfiguration.ApiName, "Bejebeje API"),
+        new ApiResource("bejebeje-api-local", "Bejebeje API")
       };
     }
 
