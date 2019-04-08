@@ -27,15 +27,13 @@ namespace Bejebeje.Identity
         args = args
           .Except(new string[] { possibleSeedArgument })
           .ToArray();
-
-        Console.WriteLine("Seed argument catched.");
       }
 
       IWebHost host = CreateWebHostBuilder(args).Build();
 
       if (seedIsRequested)
       {
-        Console.WriteLine("Inside seed if statement.");
+        Console.WriteLine("Admin user will be seeded if the account does not exist.");
 
         IConfiguration config = host
           .Services
