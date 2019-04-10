@@ -17,6 +17,8 @@ using Bejebeje.Identity.Filters;
 using Bejebeje.Identity.ViewModels;
 using Bejebeje.Identity.Extensions;
 using Bejebeje.Identity.Options;
+using System.Text.Encodings.Web;
+using Bejebeje.Identity.Services;
 
 namespace Bejebeje.Identity.Controllers
 {
@@ -30,6 +32,7 @@ namespace Bejebeje.Identity.Controllers
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
+        private readonly IEmailSender _emailSender;
 
         public AccountController(
             UserManager<BejebejeUser> userManager,
@@ -37,7 +40,8 @@ namespace Bejebeje.Identity.Controllers
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
-            IEventService events)
+            IEventService events,
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -45,25 +49,31 @@ namespace Bejebeje.Identity.Controllers
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
+            _emailSender = emailSender;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Register()
+        public IActionResult Register()
         {
             RegisterViewModel registerViewModel = new RegisterViewModel();
             return View(registerViewModel);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
           if (ModelState.IsValid)
           {
-            var user = new BejebejeUser { UserName = model.Email, Email = model.Email };
+            BejebejeUser user = new BejebejeUser
+            {
+                UserName = model.Email,
+                Email = model.Email
+            };
+
             var result = await _userManager.CreateAsync(user, model.Password);
+
             if (result.Succeeded)
             {
-              _logger.LogInformation("User created a new account with password.");
-
               var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
               
               var callbackUrl = Url.Page(
@@ -72,17 +82,22 @@ namespace Bejebeje.Identity.Controllers
                   values: new { userId = user.Id, code = code },
                   protocol: Request.Scheme);
 
-              await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+              await _emailSender.SendEmailAsync(
+                  model.Email, "Confirm your email",
                   $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
               await _signInManager.SignInAsync(user, isPersistent: false);
-              return LocalRedirect(returnUrl);
+
+              return RedirectToAction("Home", "Index");
             }
+
             foreach (var error in result.Errors)
             {
               ModelState.AddModelError(string.Empty, error.Description);
             }
           }
+
+          return View(model);
         }
 
         /// <summary>
