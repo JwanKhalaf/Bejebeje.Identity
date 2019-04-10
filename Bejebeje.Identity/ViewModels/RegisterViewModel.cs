@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Bejebeje.Identity.Models
+namespace Bejebeje.Identity.ViewModels
 {
     public class RegisterViewModel
     {

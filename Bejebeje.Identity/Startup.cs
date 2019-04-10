@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Linq;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
+using Bejebeje.Identity.Services;
 
 namespace Bejebeje.Identity
 {
@@ -107,6 +108,9 @@ namespace Bejebeje.Identity
           options.ClientId = "copy client ID from Google here";
           options.ClientSecret = "copy client secret from Google here";
         });
+
+      services
+        .AddScoped<IEmailSender, EmailSender>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
