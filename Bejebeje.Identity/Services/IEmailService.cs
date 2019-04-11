@@ -1,13 +1,10 @@
 using System.Threading.Tasks;
+using Bejebeje.Identity.ViewModels;
 
 namespace Bejebeje.Identity.Services
 {
     public interface IEmailService
     {
-        Task SendEmailAsync(
-            string emailAddress,
-            string emailSubject,
-            string emailBody
-        );
+        Task SendEmailAsync(EmailRegistrationViewModel emailViewModel);
     }
 }

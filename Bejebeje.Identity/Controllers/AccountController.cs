@@ -82,9 +82,11 @@ namespace Bejebeje.Identity.Controllers
                   values: new { userId = user.Id, code = code },
                   protocol: Request.Scheme);
 
-              await _emailService.SendEmailAsync(
-                  model.Email, "Confirm your email",
-                  $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            EmailRegistrationViewModel emailViewModel = new EmailRegistrationViewModel();
+            emailViewModel.Code = HtmlEncoder.Default.Encode(callbackUrl);
+            emailViewModel.UserEmailAddress = model.Email;
+
+              await _emailService.SendEmailAsync(emailViewModel);
 
               await _signInManager.SignInAsync(user, isPersistent: false);
 
