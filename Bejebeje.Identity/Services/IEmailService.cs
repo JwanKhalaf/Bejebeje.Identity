@@ -2,15 +2,12 @@ using System.Threading.Tasks;
 
 namespace Bejebeje.Identity.Services
 {
-    public class EmailSender : IEmailSender
+    public interface IEmailService
     {
-        public Task SendEmailAsync(
+        Task SendEmailAsync(
             string emailAddress,
             string emailSubject,
             string emailBody
-        )
-        {
-            throw new System.Exception("Not implemented.");
-        }
+        );
     }
 }

@@ -69,6 +69,9 @@ namespace Bejebeje.Identity
         {
           c.ConnectionString = databaseConnectionString;
         });
+      
+      services
+        .Configure<EmailConfiguration>(Configuration.GetSection(nameof(EmailConfiguration)));
 
       services
         .Configure<InitialIdentityServerConfiguration>(Configuration.GetSection(nameof(InitialIdentityServerConfiguration)));
@@ -110,7 +113,7 @@ namespace Bejebeje.Identity
         });
 
       services
-        .AddScoped<IEmailSender, EmailSender>();
+        .AddScoped<IEmailService, EmailService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
