@@ -17,7 +17,6 @@ using Bejebeje.Identity.Filters;
 using Bejebeje.Identity.ViewModels;
 using Bejebeje.Identity.Extensions;
 using Bejebeje.Identity.Options;
-using System.Text.Encodings.Web;
 using Bejebeje.Identity.Services;
 
 namespace Bejebeje.Identity.Controllers
