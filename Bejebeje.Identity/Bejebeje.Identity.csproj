@@ -24,4 +24,11 @@
     <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Content Update="EmailTemplates\Registration.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
