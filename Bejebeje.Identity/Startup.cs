@@ -50,7 +50,7 @@ namespace Bejebeje.Identity
 
       services
         .AddSingleton<DataSeeder>();
-      
+
       services
         .AddSingleton<Config>();
 
@@ -69,7 +69,7 @@ namespace Bejebeje.Identity
         {
           c.ConnectionString = databaseConnectionString;
         });
-      
+
       services
         .Configure<EmailConfiguration>(Configuration.GetSection(nameof(EmailConfiguration)));
 

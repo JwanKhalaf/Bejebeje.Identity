@@ -1,24 +1,24 @@
 ﻿@using IdentityServer4.Extensions
 
 @{
-    string name = null;
+  string name = null;
 
-    if (!true.Equals(ViewData["signed-out"]))
-    {
-      name = Context.User?.GetDisplayName();
-    }
+  if (!true.Equals(ViewData["signed-out"]))
+  {
+    name = Context.User?.GetDisplayName();
+  }
 }
 
 <!DOCTYPE html>
 <html class="full-height">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bêjebêje</title>
-    <link rel="stylesheet" href="~/css/bulma.min.css">
-    <link rel="stylesheet" href="~/css/site.css">
-  </head>
-  <body class="full-height">
-    @RenderBody()
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bêjebêje</title>
+  <link rel="stylesheet" href="~/css/bulma.min.css">
+  <link rel="stylesheet" href="~/css/site.css">
+</head>
+<body class="full-height">
+  @RenderBody()
+</body>
 </html>

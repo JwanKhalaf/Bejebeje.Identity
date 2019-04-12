@@ -21,7 +21,7 @@ namespace Bejebeje.Identity.Services
 
     public async Task SendEmailAsync(EmailRegistrationViewModel emailViewModel)
     {
-        
+
       string emailTemplateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EmailTemplates");
 
       string reportEmailTemplatePath = Path.Combine(emailTemplateFolderPath, "Registration.cshtml");

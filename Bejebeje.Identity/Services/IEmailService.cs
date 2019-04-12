@@ -3,8 +3,8 @@ using Bejebeje.Identity.ViewModels;
 
 namespace Bejebeje.Identity.Services
 {
-    public interface IEmailService
-    {
-        Task SendEmailAsync(EmailRegistrationViewModel emailViewModel);
-    }
+  public interface IEmailService
+  {
+    Task SendEmailAsync(EmailRegistrationViewModel emailViewModel);
+  }
 }

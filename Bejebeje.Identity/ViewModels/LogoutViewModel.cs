@@ -2,8 +2,8 @@
 
 namespace Bejebeje.Identity.ViewModels
 {
-    public class LogoutViewModel : LogoutInputModel
-    {
-        public bool ShowLogoutPrompt { get; set; } = true;
-    }
+  public class LogoutViewModel : LogoutInputModel
+  {
+    public bool ShowLogoutPrompt { get; set; } = true;
+  }
 }
