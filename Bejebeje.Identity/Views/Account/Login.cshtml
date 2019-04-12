@@ -1,49 +1,49 @@
 ﻿@model LoginViewModel
 
-<div class="columns is-gapless">
-  <div class="column is-full-height">
-    <section class="section is-full-height is-flex is-horizontally-centred is-vertically-centred">
-      <div class="login-box">
-        <div class="logo">
-          <img src="~/images/bejebeje-logo.svg" alt="bejebeje's logo" class="bejebeje-logo" />
+<div class="login is-full-height">
+  <div class="columns is-gapless wrapper">
+    <div class="column is-login-panel">
+      <section class="section is-flex is-horizontally-centred is-vertically-centred">
+        <div class="login-box">
+          <div class="logo">
+            <img src="~/images/bejebeje-logo.svg" alt="bejebeje's logo" class="bejebeje-logo" />
+          </div>
+
+          @if (Model.EnableLocalLogin)
+          {
+            <form asp-route="Login">
+              <input type="hidden" asp-for="ReturnUrl" />
+
+              <div class="field">
+                <label asp-for="Username" class="label"></label>
+                <div class="control">
+                  <input class="input" placeholder="Username" asp-for="Username" autofocus>
+                </div>
+              </div>
+
+              <div class="field">
+                <label asp-for="Password" class="label"></label>
+                <div class="control">
+                  <input type="password" class="input" placeholder="Password" asp-for="Password" autocomplete="off">
+                </div>
+              </div>
+
+              <div class="field is-grouped">
+                <div class="control">
+                  <button class="button is-link">Submit</button>
+                </div>
+                <div class="control">
+                  <button class="button is-text">Cancel</button>
+                </div>
+              </div>
+            </form>
+          }
+
+          <p>&copy; 2015 - 2019 Bêjebêje. All Rights Reserved.</p>
         </div>
-
-        @if (Model.EnableLocalLogin)
-        {
-          <form asp-route="Login">
-            <input type="hidden" asp-for="ReturnUrl" />
-
-            <div class="field">
-              <label asp-for="Username" class="label"></label>
-              <div class="control">
-                <input class="input" placeholder="Username" asp-for="Username" autofocus>
-              </div>
-            </div>
-
-            <div class="field">
-              <label asp-for="Password" class="label"></label>
-              <div class="control">
-                <input type="password" class="input" placeholder="Password" asp-for="Password" autocomplete="off">
-              </div>
-            </div>
-
-            <div class="field is-grouped">
-              <div class="control">
-                <button class="button is-link">Submit</button>
-              </div>
-              <div class="control">
-                <button class="button is-text">Cancel</button>
-              </div>
-            </div>
-          </form>
-        }
-
-        <p>&copy; 2015 - 2019 Bêjebêje. All Rights Reserved.</p>
-      </div>
-    </section>
-  </div>
-  <div class="column is-full-height">
-    <div class="hero">
+      </section>
+    </div>
+    <div class="column is-hero-panel">
     </div>
   </div>
 </div>
