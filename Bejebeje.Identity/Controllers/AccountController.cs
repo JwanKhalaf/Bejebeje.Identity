@@ -76,14 +76,14 @@ namespace Bejebeje.Identity.Controllers
         {
           var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-          var callbackUrl = Url.Page(
-              "/Account/ConfirmEmail",
-              pageHandler: null,
-              values: new { userId = user.Id, code = code },
-              protocol: Request.Scheme);
+          var callbackUrl = Url.Action(
+            "ConfirmEmail",
+            "Account",
+            new { userId = user.Id, code = code },
+            Request.Scheme);
 
           EmailRegistrationViewModel emailViewModel = new EmailRegistrationViewModel();
-          emailViewModel.Code = HtmlEncoder.Default.Encode(callbackUrl);
+          emailViewModel.Code = callbackUrl;
           emailViewModel.UserEmailAddress = model.Email;
 
           await _emailService.SendEmailAsync(emailViewModel);
@@ -100,6 +100,31 @@ namespace Bejebeje.Identity.Controllers
       }
 
       return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ConfirmEmail(string userId, string code)
+    {
+      if (userId == null || code == null)
+      {
+        return RedirectToAction("Index", "Home");
+      }
+
+      var user = await _userManager.FindByIdAsync(userId);
+
+      if (user == null)
+      {
+        return NotFound($"Unable to load user with ID '{userId}'.");
+      }
+
+      var result = await _userManager.ConfirmEmailAsync(user, code);
+
+      if (!result.Succeeded)
+      {
+        throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
+      }
+
+      return RedirectToAction("Index", "Home");
     }
 
     /// <summary>
