@@ -67,7 +67,8 @@ namespace Bejebeje.Identity.Controllers
         BejebejeUser user = new BejebejeUser
         {
           UserName = model.Email,
-          Email = model.Email
+          Email = model.Email,
+          DisplayUsername = model.Username
         };
 
         var result = await _userManager.CreateAsync(user, model.Password);
@@ -83,6 +84,7 @@ namespace Bejebeje.Identity.Controllers
             Request.Scheme);
 
           EmailRegistrationViewModel emailViewModel = new EmailRegistrationViewModel();
+          emailViewModel.UserDisplayUsername = model.Username;
           emailViewModel.Code = callbackUrl;
           emailViewModel.UserEmailAddress = model.Email;
 
