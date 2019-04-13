@@ -14,14 +14,22 @@ namespace Bejebeje.Identity.Services
   {
     private EmailConfiguration _emailConfiguration;
 
+    private readonly SmtpClient _smtpClient;
+
     public EmailService(IOptions<EmailConfiguration> emailConfiguration)
     {
       _emailConfiguration = emailConfiguration.Value;
+      _smtpClient = new SmtpClient(_emailConfiguration.SmtpHost, _emailConfiguration.SmtpPort);
+
+      _smtpClient.Credentials = new NetworkCredential(
+        _emailConfiguration.SmtpServerUsername,
+        _emailConfiguration.SmtpServerPassword);
+
+      _smtpClient.EnableSsl = true;
     }
 
-    public async Task SendEmailAsync(EmailRegistrationViewModel emailViewModel)
+    public async Task SendRegistrationEmailAsync(EmailRegistrationViewModel emailViewModel)
     {
-
       string emailTemplateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EmailTemplates");
 
       string reportEmailTemplatePath = Path.Combine(emailTemplateFolderPath, "Registration.cshtml");
@@ -33,12 +41,6 @@ namespace Bejebeje.Identity.Services
 
       string emailHtmlBody = await engine.CompileRenderAsync(reportEmailTemplatePath, emailViewModel);
 
-      SmtpClient smtpClient = new SmtpClient(_emailConfiguration.SmtpHost, _emailConfiguration.SmtpPort);
-
-      smtpClient.Credentials = new NetworkCredential(
-        _emailConfiguration.SmtpServerUsername,
-        _emailConfiguration.SmtpServerPassword);
-
       MailMessage mailMessage = new MailMessage(
         emailViewModel.UserEmailAddress,
         _emailConfiguration.OutgoingEmailAddress,
@@ -47,9 +49,36 @@ namespace Bejebeje.Identity.Services
 
       mailMessage.IsBodyHtml = true;
 
-      smtpClient.EnableSsl = true;
+      SendEmail(mailMessage);
+    }
 
-      smtpClient.Send(mailMessage);
+    public async Task SendForgotPasswordEmailAsync(EmailForgotPasswordViewModel emailViewModel)
+    {
+      string emailTemplateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EmailTemplates");
+
+      string reportEmailTemplatePath = Path.Combine(emailTemplateFolderPath, "ForgotPassword.cshtml");
+
+      RazorLightEngine engine = new RazorLightEngineBuilder()
+        .UseFilesystemProject(emailTemplateFolderPath)
+        .UseMemoryCachingProvider()
+        .Build();
+
+      string emailHtmlBody = await engine.CompileRenderAsync(reportEmailTemplatePath, emailViewModel);
+
+      MailMessage mailMessage = new MailMessage(
+        emailViewModel.UserEmailAddress,
+        _emailConfiguration.OutgoingEmailAddress,
+        "Forgotten Password",
+        emailHtmlBody);
+
+      mailMessage.IsBodyHtml = true;
+
+      SendEmail(mailMessage);
+    }
+
+    private void SendEmail(MailMessage mailMessage)
+    {
+      _smtpClient.Send(mailMessage);
     }
   }
 }

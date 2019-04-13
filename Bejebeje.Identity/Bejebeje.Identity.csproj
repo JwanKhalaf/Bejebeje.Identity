@@ -26,6 +26,9 @@
 
 
   <ItemGroup>
+    <Content Update="EmailTemplates\ForgotPassword.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="EmailTemplates\Registration.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -18,6 +18,7 @@ using Bejebeje.Identity.ViewModels;
 using Bejebeje.Identity.Extensions;
 using Bejebeje.Identity.Options;
 using Bejebeje.Identity.Services;
+using System.Collections.Generic;
 
 namespace Bejebeje.Identity.Controllers
 {
@@ -70,13 +71,13 @@ namespace Bejebeje.Identity.Controllers
           DisplayUsername = model.Username
         };
 
-        var result = await _userManager.CreateAsync(user, model.Password);
+        IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
         if (result.Succeeded)
         {
-          var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+          string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-          var callbackUrl = Url.Action(
+          string callbackUrl = Url.Action(
             "ConfirmEmail",
             "Account",
             new { userId = user.Id, code = code },
@@ -87,14 +88,14 @@ namespace Bejebeje.Identity.Controllers
           emailViewModel.Code = callbackUrl;
           emailViewModel.UserEmailAddress = model.Email;
 
-          await _emailService.SendEmailAsync(emailViewModel);
+          await _emailService.SendRegistrationEmailAsync(emailViewModel);
 
           await _signInManager.SignInAsync(user, isPersistent: false);
 
-          return RedirectToAction("Home", "Index");
+          return RedirectToAction("Index", "Home");
         }
 
-        foreach (var error in result.Errors)
+        foreach (IdentityError error in result.Errors)
         {
           ModelState.AddModelError(string.Empty, error.Description);
         }
@@ -111,14 +112,14 @@ namespace Bejebeje.Identity.Controllers
         return RedirectToAction("Index", "Home");
       }
 
-      var user = await _userManager.FindByIdAsync(userId);
+      BejebejeUser user = await _userManager.FindByIdAsync(userId);
 
       if (user == null)
       {
         return NotFound($"Unable to load user with ID '{userId}'.");
       }
 
-      var result = await _userManager.ConfirmEmailAsync(user, code);
+      IdentityResult result = await _userManager.ConfirmEmailAsync(user, code);
 
       if (!result.Succeeded)
       {
@@ -154,7 +155,7 @@ namespace Bejebeje.Identity.Controllers
     public async Task<IActionResult> Login(LoginInputModel model, string button)
     {
       // check if we are in the context of an authorization request
-      var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
+      AuthorizationRequest context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
 
       // the user clicked the "cancel" button
       if (button != "login")
@@ -185,10 +186,12 @@ namespace Bejebeje.Identity.Controllers
 
       if (ModelState.IsValid)
       {
-        var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberLogin, lockoutOnFailure: true);
+        Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberLogin, lockoutOnFailure: true);
+
         if (result.Succeeded)
         {
-          var user = await _userManager.FindByNameAsync(model.Username);
+          BejebejeUser user = await _userManager.FindByNameAsync(model.Username);
+
           await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
 
           if (context != null)
@@ -225,8 +228,9 @@ namespace Bejebeje.Identity.Controllers
       }
 
       // something went wrong, show form with error
-      var vm = await BuildLoginViewModelAsync(model);
-      return View(vm);
+      LoginViewModel viewModel = await BuildLoginViewModelAsync(model);
+
+      return View(viewModel);
     }
 
 
@@ -237,16 +241,16 @@ namespace Bejebeje.Identity.Controllers
     public async Task<IActionResult> Logout(string logoutId)
     {
       // build a model so the logout page knows what to display
-      var vm = await BuildLogoutViewModelAsync(logoutId);
+      LogoutViewModel viewModel = await BuildLogoutViewModelAsync(logoutId);
 
-      if (vm.ShowLogoutPrompt == false)
+      if (viewModel.ShowLogoutPrompt == false)
       {
         // if the request for logout was properly authenticated from IdentityServer, then
         // we don't need to show the prompt and can just log the user out directly.
-        return await Logout(vm);
+        return await Logout(viewModel);
       }
 
-      return View(vm);
+      return View(viewModel);
     }
 
     /// <summary>
@@ -257,7 +261,7 @@ namespace Bejebeje.Identity.Controllers
     public async Task<IActionResult> Logout(LogoutInputModel model)
     {
       // build a model so the logged out page knows what to display
-      var vm = await BuildLoggedOutViewModelAsync(model.LogoutId);
+      LoggedOutViewModel viewModel = await BuildLoggedOutViewModelAsync(model.LogoutId);
 
       if (User?.Identity.IsAuthenticated == true)
       {
@@ -269,28 +273,131 @@ namespace Bejebeje.Identity.Controllers
       }
 
       // check if we need to trigger sign-out at an upstream identity provider
-      if (vm.TriggerExternalSignout)
+      if (viewModel.TriggerExternalSignout)
       {
         // build a return URL so the upstream provider will redirect back
         // to us after the user has logged out. this allows us to then
         // complete our single sign-out processing.
-        string url = Url.Action("Logout", new { logoutId = vm.LogoutId });
+        string url = Url.Action("Logout", new { logoutId = viewModel.LogoutId });
 
         // this triggers a redirect to the external provider for sign-out
-        return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
+        return SignOut(new AuthenticationProperties { RedirectUri = url }, viewModel.ExternalAuthenticationScheme);
       }
 
-      return View("LoggedOut", vm);
+      return View("LoggedOut", viewModel);
     }
 
+    [HttpGet]
+    public IActionResult ForgotPassword()
+    {
+      ForgotPasswordViewModel viewModel = new ForgotPasswordViewModel();
+      return View(viewModel);
+    }
 
+    [HttpGet]
+    public IActionResult ForgotPasswordConfirmation()
+    {
+      return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+    {
+      if (ModelState.IsValid)
+      {
+        BejebejeUser user = await _userManager.FindByEmailAsync(model.Email);
+
+        if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+        {
+          // Don't reveal that the user does not exist or is not confirmed
+          return RedirectToPage("./ForgotPasswordConfirmation");
+        }
+
+        // For more information on how to enable account confirmation and password reset please 
+        // visit https://go.microsoft.com/fwlink/?LinkID=532713
+        string code = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+        string callbackUrl = Url.Action(
+          "ResetPassword",
+          "Account",
+          new { code },
+          Request.Scheme);
+
+        EmailForgotPasswordViewModel viewModel = new EmailForgotPasswordViewModel();
+        viewModel.UserDisplayUsername = user.DisplayUsername;
+        viewModel.Code = callbackUrl;
+        viewModel.UserEmailAddress = user.Email;
+
+        await _emailService.SendForgotPasswordEmailAsync(viewModel);
+
+        return RedirectToAction("ForgotPasswordConfirmation");
+      }
+
+      return RedirectToAction("Index", "Home");
+    }
+
+    [HttpGet]
+    public IActionResult ResetPasswordConfirmation()
+    {
+      return View();
+    }
+
+    [HttpGet]
+    public IActionResult ResetPassword(string code = null)
+    {
+      if (code == null)
+      {
+        return BadRequest("A code must be supplied for password reset.");
+      }
+      else
+      {
+        ResetPasswordViewModel viewModel = new ResetPasswordViewModel
+        {
+          Code = code
+        };
+
+        return View(viewModel);
+      }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+    {
+      if (!ModelState.IsValid)
+      {
+        return View(model);
+      }
+
+      BejebejeUser user = await _userManager.FindByEmailAsync(model.Email);
+
+      if (user == null)
+      {
+        // Don't reveal that the user does not exist
+        return RedirectToAction("ResetPasswordConfirmation");
+      }
+
+      IdentityResult result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+
+      if (result.Succeeded)
+      {
+        return RedirectToAction("ResetPasswordConfirmation");
+      }
+
+      foreach (IdentityError error in result.Errors)
+      {
+        ModelState.AddModelError(string.Empty, error.Description);
+      }
+
+      return View(model);
+    }
 
     /*****************************************/
     /* helper APIs for the AccountController */
     /*****************************************/
     private async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl)
     {
-      var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+      AuthorizationRequest context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+
       if (context?.IdP != null)
       {
         // this is meant to short circuit the UI and only trigger the one external IdP
@@ -303,9 +410,9 @@ namespace Bejebeje.Identity.Controllers
         };
       }
 
-      var schemes = await _schemeProvider.GetAllSchemesAsync();
+      IEnumerable<AuthenticationScheme> schemes = await _schemeProvider.GetAllSchemesAsync();
 
-      var providers = schemes
+      List<ExternalProvider> providers = schemes
           .Where(x => x.DisplayName != null ||
                       (x.Name.Equals(AccountOptions.WindowsAuthenticationSchemeName, StringComparison.OrdinalIgnoreCase))
           )
@@ -315,10 +422,12 @@ namespace Bejebeje.Identity.Controllers
             AuthenticationScheme = x.Name
           }).ToList();
 
-      var allowLocal = true;
+      bool allowLocal = true;
+
       if (context?.ClientId != null)
       {
-        var client = await _clientStore.FindEnabledClientByIdAsync(context.ClientId);
+        Client client = await _clientStore.FindEnabledClientByIdAsync(context.ClientId);
+
         if (client != null)
         {
           allowLocal = client.EnableLocalLogin;
@@ -342,42 +451,50 @@ namespace Bejebeje.Identity.Controllers
 
     private async Task<LoginViewModel> BuildLoginViewModelAsync(LoginInputModel model)
     {
-      var vm = await BuildLoginViewModelAsync(model.ReturnUrl);
-      vm.Username = model.Username;
-      vm.RememberLogin = model.RememberLogin;
-      return vm;
+      LoginViewModel viewModel = await BuildLoginViewModelAsync(model.ReturnUrl);
+      viewModel.Username = model.Username;
+      viewModel.RememberLogin = model.RememberLogin;
+
+      return viewModel;
     }
 
     private async Task<LogoutViewModel> BuildLogoutViewModelAsync(string logoutId)
     {
-      var vm = new LogoutViewModel { LogoutId = logoutId, ShowLogoutPrompt = AccountOptions.ShowLogoutPrompt };
+      LogoutViewModel viewModel = new LogoutViewModel
+      {
+        LogoutId = logoutId,
+        ShowLogoutPrompt = AccountOptions.ShowLogoutPrompt
+      };
 
       if (User?.Identity.IsAuthenticated != true)
       {
         // if the user is not authenticated, then just show logged out page
-        vm.ShowLogoutPrompt = false;
-        return vm;
+        viewModel.ShowLogoutPrompt = false;
+
+        return viewModel;
       }
 
-      var context = await _interaction.GetLogoutContextAsync(logoutId);
+      LogoutRequest context = await _interaction.GetLogoutContextAsync(logoutId);
+
       if (context?.ShowSignoutPrompt == false)
       {
         // it's safe to automatically sign-out
-        vm.ShowLogoutPrompt = false;
-        return vm;
+        viewModel.ShowLogoutPrompt = false;
+
+        return viewModel;
       }
 
       // show the logout prompt. this prevents attacks where the user
       // is automatically signed out by another malicious web page.
-      return vm;
+      return viewModel;
     }
 
     private async Task<LoggedOutViewModel> BuildLoggedOutViewModelAsync(string logoutId)
     {
       // get context information (client name, post logout redirect URI and iframe for federated signout)
-      var logout = await _interaction.GetLogoutContextAsync(logoutId);
+      LogoutRequest logout = await _interaction.GetLogoutContextAsync(logoutId);
 
-      var vm = new LoggedOutViewModel
+      LoggedOutViewModel viewModel = new LoggedOutViewModel
       {
         AutomaticRedirectAfterSignOut = AccountOptions.AutomaticRedirectAfterSignOut,
         PostLogoutRedirectUri = logout?.PostLogoutRedirectUri,
@@ -388,26 +505,28 @@ namespace Bejebeje.Identity.Controllers
 
       if (User?.Identity.IsAuthenticated == true)
       {
-        var idp = User.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
+        string idp = User.FindFirst(JwtClaimTypes.IdentityProvider)?.Value;
+
         if (idp != null && idp != IdentityServer4.IdentityServerConstants.LocalIdentityProvider)
         {
-          var providerSupportsSignout = await HttpContext.GetSchemeSupportsSignOutAsync(idp);
+          bool providerSupportsSignout = await HttpContext.GetSchemeSupportsSignOutAsync(idp);
+
           if (providerSupportsSignout)
           {
-            if (vm.LogoutId == null)
+            if (viewModel.LogoutId == null)
             {
               // if there's no current logout context, we need to create one
               // this captures necessary info from the current logged in user
               // before we signout and redirect away to the external IdP for signout
-              vm.LogoutId = await _interaction.CreateLogoutContextAsync();
+              viewModel.LogoutId = await _interaction.CreateLogoutContextAsync();
             }
 
-            vm.ExternalAuthenticationScheme = idp;
+            viewModel.ExternalAuthenticationScheme = idp;
           }
         }
       }
 
-      return vm;
+      return viewModel;
     }
   }
 }

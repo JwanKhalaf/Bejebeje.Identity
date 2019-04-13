@@ -5,6 +5,7 @@ namespace Bejebeje.Identity.Services
 {
   public interface IEmailService
   {
-    Task SendEmailAsync(EmailRegistrationViewModel emailViewModel);
+    Task SendRegistrationEmailAsync(EmailRegistrationViewModel emailViewModel);
+    Task SendForgotPasswordEmailAsync(EmailForgotPasswordViewModel emailViewModel);
   }
 }
