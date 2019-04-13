@@ -17,6 +17,9 @@ RUN dotnet restore Bejebeje.Identity.csproj
 # we now copy all the files (from local machine) to /app (in the container).
 COPY . ./
 
+# we run npm for the gulp minification and sass compilation
+RUN npm install
+
 # and again, on the container (we are in /app folder)
 # we now publish the project into a folder called 'out'.
 RUN dotnet publish Bejebeje.Identity.csproj -c Release -o out
