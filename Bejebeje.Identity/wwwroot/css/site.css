@@ -3,15 +3,11 @@
 }
 
 .is-horizontally-centred {
-    justify-content: center;
+  justify-content: center;
 }
 
 .is-vertically-centred {
-    align-items: center;
-}
-
-.login-box {
-    width: 480px;
+  align-items: center;
 }
 
 .logo {
@@ -25,26 +21,32 @@
   height: 100px;
 }
 
-.wrapper {
-  box-shadow: 10px 10px 8px #888888;
-  border-radius: 5px;
+#login-page {
+  background: url('../images/folk-pattern.jpg') repeat 0 0 #ffffff;
 }
 
-.login {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: url('../images/folk-pattern.png') repeat 0 0 #ffffff;
+.login-box-wrapper {
+  border-radius: 5px;
+  box-shadow: 0 4px 8px #7b1a1b;
 }
 
 .is-login-panel {
-  background: #ffffff;
+  background: white;
+  min-width: 320px;
+  max-width: 640px;
   border-bottom-left-radius: 5px;
   border-top-left-radius: 5px;
 }
 
 .is-hero-panel {
-  background: teal;
+  background-color: red;
+  min-width: 640px;
+  max-width: 1280px;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
+  background: url('../images/three-kurds.jpg') no-repeat 50% 35% content-box;
+}
+
+.label {
+  color: #5b5b5b;
 }
