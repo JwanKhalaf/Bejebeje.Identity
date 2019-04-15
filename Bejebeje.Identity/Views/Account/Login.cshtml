@@ -58,7 +58,7 @@
                    asp-action="Challenge"
                    asp-route-provider="@provider.AuthenticationScheme"
                    asp-route-returnUrl="@Model.ReturnUrl">
-                  @provider.DisplayName <i class="fab fa-google"></i>
+                  @provider.DisplayName <i class="fab fa-@provider.DisplayName.ToLower()"></i>
                 </a>
               </div>
             }
