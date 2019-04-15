@@ -1,0 +1,31 @@
+﻿#register-page {
+    background: url("../images/folk-pattern.jpg") repeat 0 0 #ffffff;
+
+    .login-box-wrapper {
+        border-radius: 5px;
+        box-shadow: 0 4px 8px #7b1a1b;
+    }
+
+    .is-register-panel {
+        background: white;
+        min-width: 320px;
+        max-width: 640px;
+        border-bottom-right-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+    .is-hero-panel {
+        background-color: red;
+        min-width: 640px;
+        max-width: 1280px;
+        border-bottom-left-radius: 5px;
+        border-top-left-radius: 5px;
+        background-image: url("../images/kurdish-village-women.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .label {
+        color: #5b5b5b;
+    }
+}

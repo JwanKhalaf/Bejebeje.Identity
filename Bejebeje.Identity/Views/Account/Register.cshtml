@@ -1,45 +1,59 @@
 @model RegisterViewModel
 
-<section class="section">
-  <form method="post">
-    <h4>Create a new account.</h4>
-    <hr />
-    <div asp-validation-summary="All" class="text-danger"></div>
+<div id="register-page" class="is-flex is-fullheight-universal is-vertically-centred is-horizontally-centred">
+  <div class="login-box-wrapper">
+    <div class="columns is-gapless">
+      <div class="column is-hero-panel">
+      </div>
+      <div class="column is-register-panel">
+        <section class="section">
+          <div class="logo">
+            <img src="~/images/bejebeje-logo.svg" alt="bejebeje's logo" class="bejebeje-logo" />
+          </div>
 
-    <div class="field">
-      <label class="label" asp-for="Username"></label>
-      <div class="control">
-        <input asp-for="Username" class="input" />
-        <span asp-validation-for="Username" class="text-danger"></span>
+          <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="field">
+              <label class="label" asp-for="Username"></label>
+              <div class="control">
+                <input asp-for="Username" class="input" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" asp-for="Email"></label>
+              <div class="control">
+                <input asp-for="Email" class="input" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" asp-for="Password"></label>
+              <div class="control">
+                <input asp-for="Password" class="input" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" asp-for="ConfirmPassword"></label>
+              <div class="control">
+                <input asp-for="ConfirmPassword" class="input" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+              </div>
+            </div>
+
+            <div class="field">
+              <button type="submit" class="button is-primary">Register</button>
+            </div>
+          </form>
+
+          <p class="is-size-7">B&ecirc;jeb&ecirc;je &copy; 2015 - @DateTime.Now.Year.ToString(). All Rights Reserved.</p>
+        </section>
       </div>
     </div>
-
-    <div class="field">
-      <label class="label" asp-for="Email"></label>
-      <div class="control">
-        <input asp-for="Email" class="input" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label" asp-for="Password"></label>
-      <div class="control">
-        <input asp-for="Password" class="input" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label" asp-for="ConfirmPassword"></label>
-      <div class="control">
-        <input asp-for="ConfirmPassword" class="input" />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-      </div>
-    </div>
-
-    <div class="field">
-      <button type="submit" class="button is-primary">Register</button>
-    </div>
-  </form>
-</section>
+  </div>
+</div>
