@@ -4667,15 +4667,6 @@ a.navbar-item,
       flex: none;
       width: 100%; } }
 
-.is-fullheight-universal {
-  height: 100vh; }
-
-.is-horizontally-centred {
-  justify-content: center; }
-
-.is-vertically-centred {
-  align-items: center; }
-
 .logo {
   display: flex;
   justify-content: center;
@@ -4685,46 +4676,73 @@ a.navbar-item,
   width: 100px;
   height: 100px; }
 
-#login-page {
-  background: url("../images/folk-pattern.jpg") repeat 0 0 #ffffff; }
-  #login-page .login-box-wrapper {
-    border-radius: 5px;
-    box-shadow: 0 4px 8px #7b1a1b; }
-  #login-page .is-login-panel {
-    background: white;
-    min-width: 320px;
-    max-width: 640px;
-    border-bottom-left-radius: 5px;
-    border-top-left-radius: 5px; }
-  #login-page .is-hero-panel {
-    background-color: red;
-    min-width: 640px;
-    max-width: 1280px;
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 5px;
-    background: url("../images/three-kurds.jpg") no-repeat 50% 35% content-box; }
-  #login-page .label {
-    color: #5b5b5b; }
+.is-fullheight-universal {
+  height: 100vh; }
 
-#register-page {
-  background: url("../images/folk-pattern.jpg") repeat 0 0 #ffffff; }
-  #register-page .login-box-wrapper {
-    border-radius: 5px;
-    box-shadow: 0 4px 8px #7b1a1b; }
-  #register-page .is-register-panel {
-    background: white;
-    min-width: 320px;
-    max-width: 640px;
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 5px; }
-  #register-page .is-hero-panel {
-    background-color: red;
-    min-width: 640px;
-    max-width: 1280px;
-    border-bottom-left-radius: 5px;
-    border-top-left-radius: 5px;
-    background-image: url("../images/kurdish-village-women.jpg");
-    background-repeat: no-repeat;
-    background-size: cover; }
-  #register-page .label {
-    color: #5b5b5b; }
+.is-horizontally-centred {
+  justify-content: center; }
+
+.is-vertically-centred {
+  align-items: center; }
+
+.has-margin-15 {
+  margin-bottom: 15px; }
+
+.has-folk-pattern-bg {
+  background: url("../images/folk-pattern.jpg") repeat 0 0 #cf5256; }
+
+.is-shadow-wrapper {
+  box-shadow: 0 4px 8px #7b1a1b; }
+
+.has-radius-5 {
+  border-radius: 5px; }
+
+.is-login-panel {
+  background: white;
+  min-width: 320px;
+  max-width: 640px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px; }
+
+.is-hero-panel {
+  background-color: red;
+  min-width: 640px;
+  max-width: 1280px; }
+
+.is-hero-panel-right {
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px; }
+
+.has-men-bg {
+  background: url("../images/three-kurds.jpg") no-repeat 50% 35% content-box; }
+
+.label {
+  color: #5b5b5b; }
+
+.login-box-wrapper {
+  border-radius: 5px;
+  box-shadow: 0 4px 8px #7b1a1b; }
+
+.is-register-panel {
+  background: white;
+  min-width: 320px;
+  max-width: 640px;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px; }
+
+.is-hero-panel {
+  background-color: red;
+  min-width: 640px;
+  max-width: 1280px;
+  background-repeat: no-repeat;
+  background-size: cover; }
+
+.is-hero-panel-left {
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px; }
+
+.has-women-bg {
+  background-image: url("../images/kurdish-village-women.jpg"); }
+
+.label {
+  color: #5b5b5b; }

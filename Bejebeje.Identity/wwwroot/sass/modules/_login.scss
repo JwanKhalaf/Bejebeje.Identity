@@ -1,40 +1,26 @@
-.logo {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 50px;
+.is-login-panel {
+  background: white;
+  min-width: 320px;
+  max-width: 640px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
 }
 
-.bejebeje-logo {
-    width: 100px;
-    height: 100px;
+.is-hero-panel {
+  background-color: red;
+  min-width: 640px;
+  max-width: 1280px; 
 }
 
-#login-page {
-    background: url("../images/folk-pattern.jpg") repeat 0 0 #ffffff;
+.is-hero-panel-right {
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
 
-    .login-box-wrapper {
-        border-radius: 5px;
-        box-shadow: 0 4px 8px #7b1a1b;
-    }
+.has-men-bg {
+  background: url("../images/three-kurds.jpg") no-repeat 50% 35% content-box;
+}
 
-    .is-login-panel {
-        background: white;
-        min-width: 320px;
-        max-width: 640px;
-        border-bottom-left-radius: 5px;
-        border-top-left-radius: 5px;
-    }
-
-    .is-hero-panel {
-        background-color: red;
-        min-width: 640px;
-        max-width: 1280px;
-        border-bottom-right-radius: 5px;
-        border-top-right-radius: 5px;
-        background: url("../images/three-kurds.jpg") no-repeat 50% 35% content-box;
-    }
-
-    .label {
-        color: #5b5b5b;
-    }
+.label {
+  color: #5b5b5b;
 }

@@ -40,5 +40,6 @@ $fullhd-enabled: false;
 
 // custom styles
 @import "modules/base/_helpers.scss";
+@import "modules/base/_page.scss";
 @import "modules/_login.scss";
 @import "modules/_register.scss";

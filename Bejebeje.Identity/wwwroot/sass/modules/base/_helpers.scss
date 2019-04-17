@@ -1,11 +1,26 @@
+.logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+.bejebeje-logo {
+  width: 100px;
+  height: 100px;
+}
+
 .is-fullheight-universal {
   height: 100vh;
 }
 
 .is-horizontally-centred {
-    justify-content: center;
+  justify-content: center;
 }
 
 .is-vertically-centred {
-    align-items: center;
+  align-items: center;
+}
+
+.has-margin-15 {
+  margin-bottom: 15px;
 }

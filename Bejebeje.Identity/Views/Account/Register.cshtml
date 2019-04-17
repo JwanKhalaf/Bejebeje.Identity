@@ -1,14 +1,16 @@
 @model RegisterViewModel
 
-<div id="register-page" class="is-flex is-fullheight-universal is-vertically-centred is-horizontally-centred">
-  <div class="login-box-wrapper">
+<div class="has-folk-pattern-bg is-flex is-fullheight-universal is-vertically-centred is-horizontally-centred">
+  <div class="is-shadow-wrapper has-radius-5">
     <div class="columns is-gapless">
-      <div class="column is-hero-panel">
+      <div class="column is-hero-panel is-hero-panel-left has-women-bg">
       </div>
       <div class="column is-register-panel">
         <section class="section">
           <div class="logo">
-            <img src="~/images/bejebeje-logo.svg" alt="bejebeje's logo" class="bejebeje-logo" />
+            <a href="https://bejebeje.com">
+              <img src="~/images/bejebeje-logo.svg" alt="bejebeje's logo" class="bejebeje-logo" />
+            </a>
           </div>
 
           <form method="post">
@@ -48,6 +50,7 @@
 
             <div class="field">
               <button type="submit" class="button is-primary">Register</button>
+              <a asp-action="Login" asp-controller="Account" class="button is-text">Back to login</a>
             </div>
           </form>
 

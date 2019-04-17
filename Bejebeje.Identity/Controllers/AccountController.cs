@@ -92,7 +92,7 @@ namespace Bejebeje.Identity.Controllers
 
           await _signInManager.SignInAsync(user, isPersistent: false);
 
-          return RedirectToAction("Index", "Home");
+          return Redirect("https://bejebeje.com");
         }
 
         foreach (IdentityError error in result.Errors)
