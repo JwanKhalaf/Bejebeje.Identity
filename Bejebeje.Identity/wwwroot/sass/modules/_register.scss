@@ -1,0 +1,33 @@
+﻿.login-box-wrapper {
+  border-radius: 5px;
+  box-shadow: 0 4px 8px #7b1a1b;
+}
+
+.is-register-panel {
+  background: white;
+  min-width: 320px;
+  max-width: 640px;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.is-hero-panel {
+  background-color: red;
+  min-width: 640px;
+  max-width: 1280px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.is-hero-panel-left {
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.has-women-bg {
+  background-image: url("../images/kurdish-village-women.jpg");
+}
+
+.label {
+  color: #5b5b5b;
+}

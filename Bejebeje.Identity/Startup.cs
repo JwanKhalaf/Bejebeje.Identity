@@ -8,6 +8,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Bejebeje.Identity.Models;
 using Bejebeje.Identity.Configuration;
+using System.Reflection;
+using System.Linq;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
+using Bejebeje.Identity.Services;
 using System;
 
 namespace Bejebeje.Identity
@@ -29,8 +34,11 @@ namespace Bejebeje.Identity
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      string databaseConnectionString = Configuration["Database:DefaultConnectionString"];
+      string migrationAssemblyName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+
       services
-          .AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(Configuration["Database:DefaultConnectionString"]));
+          .AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(databaseConnectionString));
 
       services
           .AddIdentity<BejebejeUser, IdentityRole>()
@@ -45,6 +53,9 @@ namespace Bejebeje.Identity
         .AddSingleton<DataSeeder>();
 
       services
+        .AddSingleton<Config>();
+
+      services
         .AddOptions();
 
       services.Configure<IISOptions>(iis =>
@@ -57,22 +68,62 @@ namespace Bejebeje.Identity
         .Configure<InitialSeedConfiguration>(Configuration.GetSection(nameof(InitialSeedConfiguration)))
         .Configure<InitialSeedConfiguration>(c =>
         {
-          c.ConnectionString = Configuration["Database:DefaultConnectionString"];
+          c.ConnectionString = databaseConnectionString;
+        });
+
+      services
+        .Configure<EmailConfiguration>(Configuration.GetSection(nameof(EmailConfiguration)));
+
+      services
+        .Configure<InitialIdentityServerConfiguration>(Configuration.GetSection(nameof(InitialIdentityServerConfiguration)));
+
+      services
+        .Configure<IdentityOptions>(options =>
+        {
+          // password settings.
+          options.Password.RequireDigit = false;
+          options.Password.RequireLowercase = false;
+          options.Password.RequireNonAlphanumeric = false;
+          options.Password.RequireUppercase = false;
+          options.Password.RequiredLength = 12;
+          options.Password.RequiredUniqueChars = 0;
+
+          // lockout settings.
+          options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+          options.Lockout.MaxFailedAccessAttempts = 5;
+          options.Lockout.AllowedForNewUsers = true;
+
+          // user settings.
+          options.User.AllowedUserNameCharacters =
+          "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+          options.User.RequireUniqueEmail = true;
+
         });
 
       var builder = services
-        .AddIdentityServer(options => 
+        .AddIdentityServer(options =>
         {
           options.Events.RaiseErrorEvents = true;
           options.Events.RaiseInformationEvents = true;
           options.Events.RaiseFailureEvents = true;
           options.Events.RaiseSuccessEvents = true;
         })
-        .AddInMemoryIdentityResources(Config.GetIdentityResources())
-        .AddInMemoryApiResources(Config.GetApis())
-        .AddInMemoryClients(Config.GetClients())
-        .AddAspNetIdentity<BejebejeUser>()
-        .AddDeveloperSigningCredential();
+        .AddConfigurationStore(options =>
+        {
+          options.ConfigureDbContext = b => b.UseNpgsql(
+            databaseConnectionString,
+            sql => sql.MigrationsAssembly(migrationAssemblyName));
+        })
+        .AddOperationalStore(options =>
+        {
+          options.ConfigureDbContext = b => b.UseNpgsql(
+            databaseConnectionString,
+            sql => sql.MigrationsAssembly(migrationAssemblyName));
+
+          options.EnableTokenCleanup = true;
+        })
+        .AddDeveloperSigningCredential()
+        .AddAspNetIdentity<BejebejeUser>();
 
       services
         .AddAuthentication()
@@ -81,16 +132,25 @@ namespace Bejebeje.Identity
           // register your IdentityServer with Google at https://console.developers.google.com
           // enable the Google+ API
           // set the redirect URI to http://localhost:5000/signin-google
-          options.ClientId = "copy client ID from Google here";
-          options.ClientSecret = "copy client secret from Google here";
+          options.ClientId = Configuration["InitialIdentityServerConfiguration:GoogleClientId"];
+          options.ClientSecret = Configuration["InitialIdentityServerConfiguration:GoogleClientSecret"];
+        })
+        .AddFacebook(options =>
+        {
+          options.ClientId = Configuration["InitialIdentityServerConfiguration:FacebookClientId"];
+          options.ClientSecret = Configuration["InitialIdentityServerConfiguration:FacebookClientSecret"];
         });
 
-      
+      services
+        .AddScoped<IEmailService, EmailService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app)
     {
+      // this will do the initial DB population
+      InitializeDatabase(app);
+
       if (Environment.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
@@ -104,6 +164,53 @@ namespace Bejebeje.Identity
       app.UseStaticFiles();
       app.UseIdentityServer();
       app.UseMvcWithDefaultRoute();
+    }
+
+    private void InitializeDatabase(IApplicationBuilder app)
+    {
+      using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+      {
+        serviceScope
+          .ServiceProvider
+          .GetRequiredService<PersistedGrantDbContext>()
+          .Database
+          .Migrate();
+
+        var context = serviceScope
+          .ServiceProvider
+          .GetRequiredService<ConfigurationDbContext>();
+
+        Config identityServerConfiguration = serviceScope.ServiceProvider.GetRequiredService<Config>();
+
+        context.Database.Migrate();
+
+        if (!context.Clients.Any())
+        {
+          foreach (var client in identityServerConfiguration.GetClients())
+          {
+            context.Clients.Add(client.ToEntity());
+          }
+          context.SaveChanges();
+        }
+
+        if (!context.IdentityResources.Any())
+        {
+          foreach (var resource in identityServerConfiguration.GetIdentityResources())
+          {
+            context.IdentityResources.Add(resource.ToEntity());
+          }
+          context.SaveChanges();
+        }
+
+        if (!context.ApiResources.Any())
+        {
+          foreach (var resource in identityServerConfiguration.GetApis())
+          {
+            context.ApiResources.Add(resource.ToEntity());
+          }
+          context.SaveChanges();
+        }
+      }
     }
   }
 }

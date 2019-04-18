@@ -3,10 +3,14 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
+using Polly.Retry;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
+using System;
 using System.Linq;
+using System.Net.Sockets;
 
 namespace Bejebeje.Identity
 {
@@ -14,12 +18,14 @@ namespace Bejebeje.Identity
   {
     public static void Main(string[] args)
     {
-      bool seedIsRequested = args.Any(x => x == "/seed");
+      string possibleSeedArgument = "-seed";
+
+      bool seedIsRequested = args.Any(x => x == possibleSeedArgument);
 
       if (seedIsRequested)
       {
         args = args
-          .Except(new string[] { "/seed" })
+          .Except(new string[] { possibleSeedArgument })
           .ToArray();
       }
 
@@ -27,6 +33,8 @@ namespace Bejebeje.Identity
 
       if (seedIsRequested)
       {
+        Console.WriteLine("Admin user will be seeded if the account does not exist.");
+
         IConfiguration config = host
           .Services
           .GetRequiredService<IConfiguration>();
@@ -35,7 +43,11 @@ namespace Bejebeje.Identity
           .Services
           .GetRequiredService<DataSeeder>();
 
-        dataSeeder.EnsureDataIsSeeded();
+        RetryPolicy retryPolicy = Policy
+          .Handle<SocketException>()
+          .Retry(5);
+
+        retryPolicy.Execute(() => dataSeeder.EnsureDataIsSeeded());
       }
 
       host.Run();
