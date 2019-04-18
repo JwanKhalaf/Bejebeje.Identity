@@ -28,7 +28,7 @@
   width: 0.625em; }
 
 .title:not(:last-child),
-.subtitle:not(:last-child) {
+.subtitle:not(:last-child), .notification:not(:last-child) {
   margin-bottom: 1.5rem; }
 
 .button.is-loading::after, .select.is-loading::after, .control.is-loading::after {
@@ -2591,6 +2591,60 @@ a.has-text-danger:hover, a.has-text-danger:focus {
   .subtitle.is-7 {
     font-size: 0.75rem; }
 
+.notification {
+  background-color: whitesmoke;
+  border-radius: 4px;
+  padding: 1.25rem 2.5rem 1.25rem 1.5rem;
+  position: relative; }
+  .notification a:not(.button):not(.dropdown-item) {
+    color: currentColor;
+    text-decoration: underline; }
+  .notification strong {
+    color: currentColor; }
+  .notification code,
+  .notification pre {
+    background: white; }
+  .notification pre code {
+    background: transparent; }
+  .notification > .delete {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem; }
+  .notification .title,
+  .notification .subtitle,
+  .notification .content {
+    color: currentColor; }
+  .notification.is-white {
+    background-color: white;
+    color: #0a0a0a; }
+  .notification.is-black {
+    background-color: #0a0a0a;
+    color: white; }
+  .notification.is-light {
+    background-color: whitesmoke;
+    color: #363636; }
+  .notification.is-dark {
+    background-color: #363636;
+    color: whitesmoke; }
+  .notification.is-primary {
+    background-color: #c1282a;
+    color: #fff; }
+  .notification.is-link {
+    background-color: #fa7c91;
+    color: #fff; }
+  .notification.is-info {
+    background-color: #209cee;
+    color: #fff; }
+  .notification.is-success {
+    background-color: #23d160;
+    color: #fff; }
+  .notification.is-warning {
+    background-color: #ffdd57;
+    color: rgba(0, 0, 0, 0.7); }
+  .notification.is-danger {
+    background-color: #ff3860;
+    color: #fff; }
+
 .navbar {
   background-color: white;
   min-height: 3.25rem;
@@ -4687,6 +4741,9 @@ a.navbar-item,
 
 .has-margin-15 {
   margin-bottom: 15px; }
+
+.notification.validation-summary-valid {
+  display: none; }
 
 .has-folk-pattern-bg {
   background: url("../images/folk-pattern.jpg") repeat 0 0 #cf5256; }

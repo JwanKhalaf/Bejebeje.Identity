@@ -13,6 +13,7 @@ using System.Linq;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Bejebeje.Identity.Services;
+using System;
 
 namespace Bejebeje.Identity
 {
@@ -75,6 +76,29 @@ namespace Bejebeje.Identity
 
       services
         .Configure<InitialIdentityServerConfiguration>(Configuration.GetSection(nameof(InitialIdentityServerConfiguration)));
+
+      services
+        .Configure<IdentityOptions>(options =>
+        {
+          // password settings.
+          options.Password.RequireDigit = false;
+          options.Password.RequireLowercase = false;
+          options.Password.RequireNonAlphanumeric = false;
+          options.Password.RequireUppercase = false;
+          options.Password.RequiredLength = 12;
+          options.Password.RequiredUniqueChars = 0;
+
+          // lockout settings.
+          options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+          options.Lockout.MaxFailedAccessAttempts = 5;
+          options.Lockout.AllowedForNewUsers = true;
+
+          // user settings.
+          options.User.AllowedUserNameCharacters =
+          "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+          options.User.RequireUniqueEmail = true;
+
+        });
 
       var builder = services
         .AddIdentityServer(options =>
