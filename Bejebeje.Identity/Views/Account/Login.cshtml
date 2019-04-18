@@ -34,11 +34,13 @@
 
               @if (Model.AllowRememberLogin)
               {
-                <div class="field">
+                <div class="field is-flex is-justify-space-between">
                   <label asp-for="RememberLogin" class="checkbox">
                     <input asp-for="RememberLogin" type="checkbox">
                     Remember me
                   </label>
+
+                  <a asp-action="ForgotPassword" asp-controller="Account" class="is-size-7">Forgotten Password</a>
                 </div>
               }
 
