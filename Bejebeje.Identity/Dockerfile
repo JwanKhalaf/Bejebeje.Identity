@@ -17,6 +17,24 @@ RUN dotnet restore Bejebeje.Identity.csproj
 # we now copy all the files (from local machine) to /app (in the container).
 COPY . ./
 
+# update the ubuntu packages and install curl
+RUN apt-get update -yq && apt-get upgrade -yq
+
+# download node
+RUN curl -sL https://deb.nodesource.com/setup_11.x | bash -
+
+# install nodejs
+RUN apt-get install -y nodejs
+
+# install npm
+RUN npm install -g npm
+
+# we run npm for the gulp minification and sass compilation
+RUN npm install
+
+# install gulp-cli globally
+RUN npm install gulp-cli -g
+
 # and again, on the container (we are in /app folder)
 # we now publish the project into a folder called 'out'.
 RUN dotnet publish Bejebeje.Identity.csproj -c Release -o out

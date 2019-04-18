@@ -12,6 +12,8 @@ using System.Reflection;
 using System.Linq;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
+using Bejebeje.Identity.Services;
+using System;
 
 namespace Bejebeje.Identity
 {
@@ -49,7 +51,7 @@ namespace Bejebeje.Identity
 
       services
         .AddSingleton<DataSeeder>();
-      
+
       services
         .AddSingleton<Config>();
 
@@ -70,7 +72,33 @@ namespace Bejebeje.Identity
         });
 
       services
+        .Configure<EmailConfiguration>(Configuration.GetSection(nameof(EmailConfiguration)));
+
+      services
         .Configure<InitialIdentityServerConfiguration>(Configuration.GetSection(nameof(InitialIdentityServerConfiguration)));
+
+      services
+        .Configure<IdentityOptions>(options =>
+        {
+          // password settings.
+          options.Password.RequireDigit = false;
+          options.Password.RequireLowercase = false;
+          options.Password.RequireNonAlphanumeric = false;
+          options.Password.RequireUppercase = false;
+          options.Password.RequiredLength = 12;
+          options.Password.RequiredUniqueChars = 0;
+
+          // lockout settings.
+          options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+          options.Lockout.MaxFailedAccessAttempts = 5;
+          options.Lockout.AllowedForNewUsers = true;
+
+          // user settings.
+          options.User.AllowedUserNameCharacters =
+          "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+          options.User.RequireUniqueEmail = true;
+
+        });
 
       var builder = services
         .AddIdentityServer(options =>
@@ -104,9 +132,17 @@ namespace Bejebeje.Identity
           // register your IdentityServer with Google at https://console.developers.google.com
           // enable the Google+ API
           // set the redirect URI to http://localhost:5000/signin-google
-          options.ClientId = "copy client ID from Google here";
-          options.ClientSecret = "copy client secret from Google here";
+          options.ClientId = Configuration["InitialIdentityServerConfiguration:GoogleClientId"];
+          options.ClientSecret = Configuration["InitialIdentityServerConfiguration:GoogleClientSecret"];
+        })
+        .AddFacebook(options =>
+        {
+          options.ClientId = Configuration["InitialIdentityServerConfiguration:FacebookClientId"];
+          options.ClientSecret = Configuration["InitialIdentityServerConfiguration:FacebookClientSecret"];
         });
+
+      services
+        .AddScoped<IEmailService, EmailService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

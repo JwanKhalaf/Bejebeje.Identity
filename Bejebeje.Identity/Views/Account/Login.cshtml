@@ -1,13 +1,18 @@
 ﻿@model LoginViewModel
 
-<div class="columns is-gapless">
-  <div class="column is-full-height">
-    <section class="section is-full-height is-flex is-horizontally-centred is-vertically-centred">
-        <div class="login-box">
+<div class="has-folk-pattern-bg is-flex is-fullheight-universal is-vertically-centred is-horizontally-centred">
+  <div class="is-shadow-wrapper has-radius-5">
+    <div class="columns is-gapless">
+      <div class="column is-login-panel">
+        <section class="section">
           <div class="logo">
-            <img src="~/images/bejebeje-logo.svg" alt="bejebeje's logo" class="bejebeje-logo" />
+            <a href="https://bejebeje.com">
+              <img src="~/images/bejebeje-logo.svg" alt="bejebeje's logo" class="bejebeje-logo" />
+            </a>
           </div>
-          
+
+          <p class="is-size-6 has-margin-15">Wish to contribute? <a asp-action="Register" asp-controller="Account">Create an account</a></p>
+
           @if (Model.EnableLocalLogin)
           {
             <form asp-route="Login">
@@ -27,23 +32,47 @@
                 </div>
               </div>
 
-              <div class="field is-grouped">
-                <div class="control">
-                  <button class="button is-link">Submit</button>
+              @if (Model.AllowRememberLogin)
+              {
+                <div class="field">
+                  <label asp-for="RememberLogin" class="checkbox">
+                    <input asp-for="RememberLogin" type="checkbox">
+                    Remember me
+                  </label>
                 </div>
-                <div class="control">
-                  <button class="button is-text">Cancel</button>
-                </div>
+              }
+
+              <div class="field">
+                <button class="button is-primary is-fullwidth">Login</button>
               </div>
             </form>
           }
 
-          <p>&copy; 2015 - 2019 Bêjebêje. All Rights Reserved.</p>
-        </div>
-    </section>
-  </div>
-  <div class="column is-full-height">
-    <div class="hero">
+          <div class="field">
+            <p>Or login with</p>
+          </div>
+
+          @if (Model.VisibleExternalProviders.Any())
+          {
+            @foreach (var provider in Model.VisibleExternalProviders)
+            {
+              <div class="field">
+                <a class="button is-google-button is-fullwidth"
+                   asp-controller="External"
+                   asp-action="Challenge"
+                   asp-route-provider="@provider.AuthenticationScheme"
+                   asp-route-returnUrl="@Model.ReturnUrl">
+                  @provider.DisplayName <i class="fab fa-@provider.DisplayName.ToLower()"></i>
+                </a>
+              </div>
+            }
+          }
+
+          <p class="is-size-7">B&ecirc;jeb&ecirc;je &copy; 2015 - @DateTime.Now.Year.ToString(). All Rights Reserved.</p>
+        </section>
+      </div>
+      <div class="column is-hero-panel is-hero-panel-right has-men-bg">
+      </div>
     </div>
   </div>
 </div>

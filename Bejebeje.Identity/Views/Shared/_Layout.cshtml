@@ -1,24 +1,28 @@
 ﻿@using IdentityServer4.Extensions
 
 @{
-    string name = null;
+  string name = null;
 
-    if (!true.Equals(ViewData["signed-out"]))
-    {
-      name = Context.User?.GetDisplayName();
-    }
+  if (!true.Equals(ViewData["signed-out"]))
+  {
+    name = Context.User?.GetDisplayName();
+  }
 }
 
 <!DOCTYPE html>
-<html class="full-height">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bêjebêje</title>
-    <link rel="stylesheet" href="~/css/bulma.min.css">
-    <link rel="stylesheet" href="~/css/site.css">
-  </head>
-  <body class="full-height">
-    @RenderBody()
-  </body>
+<html class="is-fullheight-universal">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="style-src *; font-src *">
+  <meta http-equiv="X-Content-Security-Policy" content="style-src *; font-src *">
+  <meta http-equiv="X-WebKit-CSP" content="style-src *; font-src *">
+  <title>Bêjebêje</title>
+  <link rel="stylesheet" href="~/css/main.min.css">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-Bx4pytHkyTDy3aJKjGkGoHPt3tvv6zlwwjc3iqN7ktaiEMLDPqLSZYts2OjKcBx1">
+</head>
+<body class="is-fullheight-universal">
+  @RenderBody()
+  @RenderSection("Scripts", required: false)
+</body>
 </html>
