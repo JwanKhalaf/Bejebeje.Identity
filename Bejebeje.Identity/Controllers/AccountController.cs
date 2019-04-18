@@ -55,6 +55,7 @@ namespace Bejebeje.Identity.Controllers
     [HttpGet]
     public IActionResult Register()
     {
+      ViewData["Title"] = "Register";
       RegisterViewModel registerViewModel = new RegisterViewModel();
       return View(registerViewModel);
     }
@@ -135,6 +136,8 @@ namespace Bejebeje.Identity.Controllers
     [HttpGet]
     public async Task<IActionResult> Login(string returnUrl)
     {
+      ViewData["Title"] = "Login";
+
       // build a model so we know what to show on the login page
       LoginViewModel loginViewModel = await BuildLoginViewModelAsync(returnUrl);
 
@@ -240,6 +243,8 @@ namespace Bejebeje.Identity.Controllers
     [HttpGet]
     public async Task<IActionResult> Logout(string logoutId)
     {
+      ViewData["Title"] = "Logout";
+
       // build a model so the logout page knows what to display
       LogoutViewModel viewModel = await BuildLogoutViewModelAsync(logoutId);
 
@@ -290,6 +295,7 @@ namespace Bejebeje.Identity.Controllers
     [HttpGet]
     public IActionResult ForgotPassword()
     {
+      ViewData["Title"] = "Forgotten Password";
       ForgotPasswordViewModel viewModel = new ForgotPasswordViewModel();
       return View(viewModel);
     }
@@ -339,12 +345,15 @@ namespace Bejebeje.Identity.Controllers
     [HttpGet]
     public IActionResult ResetPasswordConfirmation()
     {
+      ViewData["Title"] = "Password Reset";
       return View();
     }
 
     [HttpGet]
     public IActionResult ResetPassword(string code = null)
     {
+      ViewData["Title"] = "Reset Password";
+
       if (code == null)
       {
         return BadRequest("A code must be supplied for password reset.");
