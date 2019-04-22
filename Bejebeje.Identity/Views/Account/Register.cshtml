@@ -1,61 +1,66 @@
 @model RegisterViewModel
 
-<div class="has-folk-pattern-bg is-flex is-fullheight-universal is-vertically-centred is-horizontally-centred">
-  <div class="is-shadow-wrapper has-radius-5">
-    <div class="columns is-gapless">
-      <div class="column is-hero-panel is-hero-panel-left has-women-bg">
+<div class="columns is-gapless">
+  <div class="column is-fullheight-universal is-two-fifths is-flex is-vertically-centred is-horizontally-centred">
+    <div class="container is-fluid">
+      <div class="logo">
+        <a href="https://bejebeje.com">
+          <img src="~/images/bejebeje-logo.svg" alt="bejebeje's logo" class="bejebeje-logo" />
+        </a>
       </div>
-      <div class="column is-register-panel">
-        <section class="section">
-          <div class="logo">
-            <a href="https://bejebeje.com">
-              <img src="~/images/bejebeje-logo.svg" alt="bejebeje's logo" class="bejebeje-logo" />
-            </a>
+
+      <form method="post">
+        <div asp-validation-summary="All" class="notification is-danger"></div>
+
+        <div class="field">
+          <label class="label" asp-for="Username"></label>
+          <div class="control">
+            <input asp-for="Username" class="input is-medium" />
+            <span asp-validation-for="Username" class="text-danger"></span>
           </div>
+        </div>
 
-          <form method="post">
-            <div asp-validation-summary="All" class="notification is-danger"></div>
+        <div class="field">
+          <label class="label" asp-for="Email"></label>
+          <div class="control">
+            <input asp-for="Email" class="input is-medium" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+          </div>
+        </div>
 
-            <div class="field">
-              <label class="label" asp-for="Username"></label>
-              <div class="control">
-                <input asp-for="Username" class="input" />
-                <span asp-validation-for="Username" class="text-danger"></span>
-              </div>
-            </div>
+        <div class="field">
+          <label class="label" asp-for="Password"></label>
+          <div class="control">
+            <input asp-for="Password" class="input is-medium" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+          </div>
+        </div>
 
-            <div class="field">
-              <label class="label" asp-for="Email"></label>
-              <div class="control">
-                <input asp-for="Email" class="input" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-              </div>
-            </div>
+        <div class="field">
+          <label class="label" asp-for="ConfirmPassword"></label>
+          <div class="control">
+            <input asp-for="ConfirmPassword" class="input is-medium" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+          </div>
+        </div>
 
-            <div class="field">
-              <label class="label" asp-for="Password"></label>
-              <div class="control">
-                <input asp-for="Password" class="input" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-              </div>
-            </div>
+        <div class="field">
+          <button type="submit" class="button is-primary is-medium">Register</button>
+          <a asp-action="Login" asp-controller="Account" class="button is-text is-medium">Back to login</a>
+        </div>
+      </form>
 
-            <div class="field">
-              <label class="label" asp-for="ConfirmPassword"></label>
-              <div class="control">
-                <input asp-for="ConfirmPassword" class="input" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-              </div>
-            </div>
-
-            <div class="field">
-              <button type="submit" class="button is-primary">Register</button>
-              <a asp-action="Login" asp-controller="Account" class="button is-text">Back to login</a>
-            </div>
-          </form>
-
-          <p class="is-size-7">B&ecirc;jeb&ecirc;je &copy; 2015 - @DateTime.Now.Year.ToString(). All Rights Reserved.</p>
-        </section>
+      <p class="is-size-6">B&ecirc;jeb&ecirc;je &copy; 2015 - @DateTime.Now.Year.ToString(). All Rights Reserved.</p>
+    </div>
+  </div>
+  <div class="column is-hidden-touch">
+    <div class="has-folk-pattern-bg is-fullheight-universal is-flex is-fluid">
+      <div class="container is-fullhd is-flex is-flex-columns is-flex-evenly-spaced">
+        <div class="photo-frame has-women-bg has-margin-15">
+        </div>
+        <div class="proverb">
+          <p class="is-family-secondary">&ldquo;Derdê welat pir girane, jê re divên, jîr û zana.&rdquo;</p>
+        </div>
       </div>
     </div>
   </div>
