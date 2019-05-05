@@ -57,7 +57,7 @@ namespace Bejebeje.Identity.Configuration
           RedirectUris = { "http://localhost:1234/callback" },
           PostLogoutRedirectUris = { "http://localhost:1234" },
           AllowedCorsOrigins = { "http://localhost:1234" },
-          AllowedScopes = { "openid", "profile", identityServerConfiguration.ApiName }
+          AllowedScopes = { "openid", "profile", "bejebeje-api-local" }
         }
       };
     }
