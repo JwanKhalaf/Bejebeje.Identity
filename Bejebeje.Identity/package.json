@@ -4,6 +4,8 @@
   "main": "index.js",
   "author": "Jwan Khalaf",
   "license": "GPL-3.0",
+  "repository": "https://github.com/JwanKhalaf/Bejebeje.Identity",
+  "description": "the identity project for bejebeje.",
   "devDependencies": {
     "bulma": "^0.7.4",
     "gulp": "^4.0.0",
