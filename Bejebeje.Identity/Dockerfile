@@ -26,11 +26,17 @@ RUN curl -sL https://deb.nodesource.com/setup_11.x | bash -
 # install nodejs
 RUN apt-get install -y nodejs
 
-# install npm
-RUN npm install -g npm
+# print out nodejs version
+RUN node --version
+
+# list files
+RUN ls -la
 
 # we run npm for the gulp minification and sass compilation
 RUN npm install
+
+# rebuild node-sass
+RUN npm rebuild node-sass
 
 # install gulp-cli globally
 RUN npm install gulp-cli -g
