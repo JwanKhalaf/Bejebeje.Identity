@@ -7,8 +7,8 @@
   "repository": "https://github.com/JwanKhalaf/Bejebeje.Identity",
   "description": "the identity project for bejebeje.",
   "devDependencies": {
-    "bulma": "^0.7.4",
-    "gulp": "^4.0.0",
+    "bulma": "^0.7.5",
+    "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-cssmin": "^0.2.0",
     "gulp-sass": "^4.0.2",
