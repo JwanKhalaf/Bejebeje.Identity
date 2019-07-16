@@ -42,10 +42,13 @@ namespace Bejebeje.Identity.Configuration
           AllowedGrantTypes = GrantTypes.Code,
           RequirePkce = true,
           RequireClientSecret = false,
+          RequireConsent = false,
           RedirectUris = { "https://bejebeje.com/login-callback" },
           PostLogoutRedirectUris = { "https://bejebeje.com/logout-callback" },
           AllowedCorsOrigins = { "https://bejebeje.com" },
-          AllowedScopes = { "openid", "profile", identityServerConfiguration.ApiName }
+          AllowedScopes = { "openid", "profile", identityServerConfiguration.ApiName },
+          AllowOfflineAccess = true,
+          RefreshTokenUsage = TokenUsage.ReUse,
         },
         new Client
         {
@@ -54,10 +57,13 @@ namespace Bejebeje.Identity.Configuration
           AllowedGrantTypes = GrantTypes.Code,
           RequirePkce = true,
           RequireClientSecret = false,
+          RequireConsent = false,
           RedirectUris = { "http://localhost:1234/login-callback" },
           PostLogoutRedirectUris = { "http://localhost:1234/logout-callback" },
           AllowedCorsOrigins = { "http://localhost:1234" },
-          AllowedScopes = { "openid", "profile", "bejebeje-api-local" }
+          AllowedScopes = { "openid", "profile", "bejebeje-api-local" },
+          AllowOfflineAccess = true,
+          RefreshTokenUsage = TokenUsage.ReUse,
         }
       };
     }
