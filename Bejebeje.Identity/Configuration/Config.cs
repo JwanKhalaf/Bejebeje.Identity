@@ -39,25 +39,31 @@ namespace Bejebeje.Identity.Configuration
         {
           ClientId = identityServerConfiguration.FrontendClientId,
           ClientName = "Bejebeje ReactJS SPA Client",
-          AllowedGrantTypes = GrantTypes.Implicit,
-          AllowAccessTokensViaBrowser = true,
+          AllowedGrantTypes = GrantTypes.Code,
+          RequirePkce = true,
+          RequireClientSecret = false,
           RequireConsent = false,
-          RedirectUris = { "https://bejebeje.com/callback" },
-          PostLogoutRedirectUris = { "https://bejebeje.com" },
+          RedirectUris = { "https://bejebeje.com/login-callback" },
+          PostLogoutRedirectUris = { "https://bejebeje.com/logout-callback" },
           AllowedCorsOrigins = { "https://bejebeje.com" },
-          AllowedScopes = { "openid", "profile", identityServerConfiguration.ApiName }
+          AllowedScopes = { "openid", "profile", identityServerConfiguration.ApiName },
+          AllowOfflineAccess = true,
+          RefreshTokenUsage = TokenUsage.ReUse,
         },
         new Client
         {
           ClientId = "bejebeje-react-local",
           ClientName = "Bejebeje ReactJS SPA Client",
-          AllowedGrantTypes = GrantTypes.Implicit,
-          AllowAccessTokensViaBrowser = true,
+          AllowedGrantTypes = GrantTypes.Code,
+          RequirePkce = true,
+          RequireClientSecret = false,
           RequireConsent = false,
-          RedirectUris = { "http://localhost:1234/callback" },
-          PostLogoutRedirectUris = { "http://localhost:1234" },
+          RedirectUris = { "http://localhost:1234/login-callback" },
+          PostLogoutRedirectUris = { "http://localhost:1234/logout-callback" },
           AllowedCorsOrigins = { "http://localhost:1234" },
-          AllowedScopes = { "openid", "profile", identityServerConfiguration.ApiName }
+          AllowedScopes = { "openid", "profile", "bejebeje-api-local" },
+          AllowOfflineAccess = true,
+          RefreshTokenUsage = TokenUsage.ReUse,
         }
       };
     }

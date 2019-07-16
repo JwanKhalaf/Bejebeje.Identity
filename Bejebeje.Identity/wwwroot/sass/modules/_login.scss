@@ -18,7 +18,37 @@
 }
 
 .has-men-bg {
-  background: url("../images/three-kurds.jpg") no-repeat 50% 35% content-box;
+  background-image: url("../images/three-kurds.jpg");
+  background-repeat: no-repeat;
+  background-position: 50% 35%;
+  background-size: cover;
+}
+
+.photo-frame {
+  width: 75%;
+  height: 55%;
+  border: 70px solid #2f2f2f;
+}
+
+.proverb {
+
+
+  p {
+    color: #eaeaea;
+    background-color: #2f2f2f;
+    display: inline-block;
+    padding: 15px;
+    font-size: 2rem;
+  }
+}
+
+.is-flex-columns {
+  flex-direction: column;
+}
+
+.is-flex-evenly-spaced {
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .label {
