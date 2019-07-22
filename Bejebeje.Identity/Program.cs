@@ -45,6 +45,7 @@ namespace Bejebeje.Identity
 
         RetryPolicy retryPolicy = Policy
           .Handle<SocketException>()
+          .Or<PostgresException>()
           .Retry(5);
 
         retryPolicy.Execute(() => dataSeeder.EnsureDataIsSeeded());
