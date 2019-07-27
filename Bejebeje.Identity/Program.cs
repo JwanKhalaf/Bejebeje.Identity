@@ -3,6 +3,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 using Polly;
 using Polly.Retry;
 using Serilog;
@@ -46,7 +47,7 @@ namespace Bejebeje.Identity
         RetryPolicy retryPolicy = Policy
           .Handle<SocketException>()
           .Or<PostgresException>()
-          .Retry(5);
+          .Retry(10);
 
         retryPolicy.Execute(() => dataSeeder.EnsureDataIsSeeded());
       }
