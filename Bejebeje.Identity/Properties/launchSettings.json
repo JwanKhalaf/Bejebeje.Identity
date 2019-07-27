@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "Bejebeje.Identity": {
+    "local": {
       "commandName": "Project",
       "commandLineArgs": "-seed",
       "launchBrowser": true,
