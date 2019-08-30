@@ -163,6 +163,11 @@ namespace Bejebeje.Identity
 
       app.UseStaticFiles();
       app.UseIdentityServer();
+      app.Use(async (httpContent, next) =>
+      {
+        httpContent.Response.Headers.Add("Content-Security-Policy", "default-src 'self' *.googleapis.com *.gstatic.com; report-uri /cspreport");
+        await next();
+      });
       app.UseMvcWithDefaultRoute();
     }
 
