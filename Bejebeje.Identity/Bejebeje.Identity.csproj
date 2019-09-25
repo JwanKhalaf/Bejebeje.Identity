@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <UserSecretsId>bejebeje.identity-831FC03A-05F7-4BFD-BD71-CE144B091DFB</UserSecretsId>
+    <UserSecretsId>bejebeje.identity-831fc03a-05f7-4bfd-bd71-ce144b091dfb</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
