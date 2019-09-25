@@ -1,44 +1,45 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Bejebeje.Identity.Data;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Bejebeje.Identity.Models;
-using Bejebeje.Identity.Configuration;
-using System.Reflection;
-using System.Linq;
-using IdentityServer4.EntityFramework.DbContexts;
-using IdentityServer4.EntityFramework.Mappers;
-using Bejebeje.Identity.Services;
-using System;
-
-namespace Bejebeje.Identity
+﻿namespace Bejebeje.Identity
 {
+  using Microsoft.AspNetCore.Builder;
+  using Microsoft.AspNetCore.Identity;
+  using Microsoft.AspNetCore.Hosting;
+  using Microsoft.AspNetCore.Mvc;
+  using Microsoft.EntityFrameworkCore;
+  using Bejebeje.Identity.Data;
+  using Microsoft.Extensions.Configuration;
+  using Microsoft.Extensions.DependencyInjection;
+  using Bejebeje.Identity.Models;
+  using Bejebeje.Identity.Configuration;
+  using System.Reflection;
+  using System.Linq;
+  using IdentityServer4.EntityFramework.DbContexts;
+  using IdentityServer4.EntityFramework.Mappers;
+  using Bejebeje.Identity.Services;
+  using System;
+  using Microsoft.Extensions.Hosting;
+
   public class Startup
   {
     public IConfiguration Configuration { get; }
 
-    public IHostingEnvironment Environment { get; }
+    public IWebHostEnvironment Environment { get; }
 
     public Startup(
       IConfiguration configuration,
-      IHostingEnvironment environment)
+      IWebHostEnvironment environment)
     {
       Configuration = configuration;
       Environment = environment;
     }
-
-    // This method gets called by the runtime. Use this method to add services to the container.
+   
     public void ConfigureServices(IServiceCollection services)
     {
       string databaseConnectionString = Configuration["Database:DefaultConnectionString"];
       string migrationAssemblyName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
       services
-          .AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(databaseConnectionString));
+          .AddDbContext<ApplicationDbContext>(options => options
+            .UseNpgsql(databaseConnectionString));
 
       services
           .AddIdentity<BejebejeUser, IdentityRole>()
@@ -47,10 +48,10 @@ namespace Bejebeje.Identity
 
       services
           .AddMvc()
-          .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+          .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
       services
-        .AddSingleton<DataSeeder>();
+        .AddScoped<IDataSeederService, DataSeederService>();
 
       services
         .AddSingleton<Config>();
@@ -126,35 +127,19 @@ namespace Bejebeje.Identity
         .AddAspNetIdentity<BejebejeUser>();
 
       services
-        .AddAuthentication()
-        .AddGoogle(options =>
-        {
-          // register your IdentityServer with Google at https://console.developers.google.com
-          // enable the Google+ API
-          // set the redirect URI to http://localhost:5000/signin-google
-          options.ClientId = Configuration["InitialIdentityServerConfiguration:GoogleClientId"];
-          options.ClientSecret = Configuration["InitialIdentityServerConfiguration:GoogleClientSecret"];
-        })
-        .AddFacebook(options =>
-        {
-          options.ClientId = Configuration["InitialIdentityServerConfiguration:FacebookClientId"];
-          options.ClientSecret = Configuration["InitialIdentityServerConfiguration:FacebookClientSecret"];
-        });
+        .AddAuthentication();
 
       services
         .AddScoped<IEmailService, EmailService>();
     }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app)
     {
-      // this will do the initial DB population
       InitializeDatabase(app);
 
       if (Environment.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
-        app.UseDatabaseErrorPage();
       }
       else
       {
@@ -162,13 +147,21 @@ namespace Bejebeje.Identity
       }
 
       app.UseStaticFiles();
+
+      app.UseRouting();
+
       app.UseIdentityServer();
+
       app.Use(async (httpContent, next) =>
       {
         httpContent.Response.Headers.Add("Content-Security-Policy", "default-src 'self' *.googleapis.com *.gstatic.com; report-uri /cspreport");
         await next();
       });
-      app.UseMvcWithDefaultRoute();
+
+      app.UseEndpoints(endpoints =>
+      {
+        endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+      });
     }
 
     private void InitializeDatabase(IApplicationBuilder app)
