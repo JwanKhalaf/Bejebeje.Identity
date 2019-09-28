@@ -1,23 +1,23 @@
-﻿using Bejebeje.Identity.Data;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Npgsql;
-using Polly;
-using Polly.Retry;
-using Serilog;
-using Serilog.Events;
-using Serilog.Sinks.SystemConsole.Themes;
-using System;
-using System.Linq;
-using System.Net.Sockets;
-
-namespace Bejebeje.Identity
+﻿namespace Bejebeje.Identity
 {
+  using Bejebeje.Identity.Services;
+  using Microsoft.AspNetCore.Hosting;
+  using Microsoft.Extensions.DependencyInjection;
+  using Microsoft.Extensions.Hosting;
+  using Npgsql;
+  using Polly;
+  using Polly.Retry;
+  using Serilog;
+  using Serilog.Events;
+  using Serilog.Sinks.SystemConsole.Themes;
+  using System;
+  using System.Linq;
+  using System.Net.Sockets;
+  using System.Threading.Tasks;
+
   public class Program
   {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
       string possibleSeedArgument = "-seed";
 
@@ -30,50 +30,51 @@ namespace Bejebeje.Identity
           .ToArray();
       }
 
-      IWebHost host = CreateWebHostBuilder(args).Build();
+      IHost host = CreateHostBuilder(args).Build();
 
       if (seedIsRequested)
       {
         Console.WriteLine("Admin user will be seeded if the account does not exist.");
 
-        IConfiguration config = host
-          .Services
-          .GetRequiredService<IConfiguration>();
+        using (IServiceScope serviceScope = host.Services.CreateScope())
+        {
+          IDataSeederService dataSeederService = serviceScope.ServiceProvider.GetService<IDataSeederService>();
 
-        DataSeeder dataSeeder = host
-          .Services
-          .GetRequiredService<DataSeeder>();
+          AsyncRetryPolicy retryPolicy = Policy
+            .Handle<SocketException>()
+            .Or<PostgresException>()
+            .RetryAsync(10);
 
-        RetryPolicy retryPolicy = Policy
-          .Handle<SocketException>()
-          .Or<PostgresException>()
-          .Retry(10);
-
-        retryPolicy.Execute(() => dataSeeder.EnsureDataIsSeeded());
+          await retryPolicy.ExecuteAsync(() => dataSeederService.SeedDataAsync());
+        }
       }
 
-      host.Run();
+      await host.RunAsync();
     }
 
-    public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+    public static IHostBuilder CreateHostBuilder(string[] args)
     {
-      return WebHost
+      return Host
         .CreateDefaultBuilder(args)
-        .UseStartup<Startup>()
-        .UseSerilog(
-          (context, configuration) =>
-          {
-            configuration
-              .MinimumLevel.Debug()
-              .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-              .MinimumLevel.Override("System", LogEventLevel.Warning)
-              .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
-              .Enrich.FromLogContext()
-              .WriteTo.File(@"identityserver4_log.txt")
-              .WriteTo.Console(
-                outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}",
-                theme: AnsiConsoleTheme.Literate);
-          });
+        .ConfigureWebHostDefaults(webBuilder =>
+        {
+          webBuilder
+          .UseStartup<Startup>()
+          .UseSerilog(
+            (context, configuration) =>
+            {
+              configuration
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("System", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.File(@"identityserver4_log.txt")
+                .WriteTo.Console(
+                  outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}",
+                  theme: AnsiConsoleTheme.Literate);
+            });
+        });
     }
   }
 }

@@ -3,14 +3,16 @@ using System;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Bejebeje.Identity.Migrations.ConfigurationDb
 {
   [DbContext(typeof(ConfigurationDbContext))]
-  partial class ConfigurationDbContextModelSnapshot : ModelSnapshot
+  [Migration("20190928133227_Initial")]
+  partial class Initial
   {
-    protected override void BuildModel(ModelBuilder modelBuilder)
+    protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
 #pragma warning disable 612, 618
       modelBuilder
