@@ -1,5 +1,5 @@
 # set base image as the dotnet 2.2 SDK.
-FROM microsoft/dotnet:2.2-sdk AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build-env
 
 # set the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD
 # instructions that follows the WORKDIR instruction.
@@ -46,7 +46,7 @@ RUN npm install gulp-cli -g
 RUN dotnet publish Bejebeje.Identity.csproj -c Release -o out
 
 # set base image as the dotnet 2.2 runtime.
-FROM microsoft/dotnet:2.2-aspnetcore-runtime AS runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0 AS runtime
 
 # an environmental variable for the seed user website.
 ENV InitialSeedConfiguration__Website=https://www.code-hound.com
