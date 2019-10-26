@@ -48,9 +48,6 @@ RUN dotnet publish Bejebeje.Identity.csproj -c Release -o out
 # set base image as the dotnet 2.2 runtime.
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.0 AS runtime
 
-# an environmental variable for the seed user website.
-ENV InitialSeedConfiguration__Website=https://www.code-hound.com
-
 # telling the application what port to run on.
 ENV ASPNETCORE_URLS=http://*:5000
 
