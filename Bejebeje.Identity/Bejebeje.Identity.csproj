@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <Target Name="MyPreCompileTarget" BeforeTargets="Build">
-    <Exec Command="gulp default" />
+    <Exec Command="npx gulp default" />
   </Target>
 
 </Project>
