@@ -6,7 +6,6 @@ dotnet: 2.2
 branches:
   only:
     - master
-    - feature/improve-docker-image
 before_script:
   - chmod -R a+x scripts
 script:
