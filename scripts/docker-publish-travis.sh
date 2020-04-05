@@ -1,7 +1,9 @@
 DOCKER_TAG='latest'
 
 # log into docker hub.
+echo "before login"
 docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+echo "after login"
 
 # build the docker image.
 docker build -f ./Bejebeje.Identity/Dockerfile -t bejebeje/identity:$DOCKER_TAG -t bejebeje/identity:$TRAVIS_BUILD_NUMBER ./Bejebeje.Identity --no-cache
