@@ -21,7 +21,7 @@ COPY . ./
 RUN apt-get update -yq && apt-get upgrade -yq
 
 # download node
-RUN curl -sL https://deb.nodesource.com/setup_11.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 
 # install nodejs
 RUN apt-get install -y nodejs
