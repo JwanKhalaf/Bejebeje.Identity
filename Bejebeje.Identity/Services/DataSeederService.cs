@@ -1,8 +1,8 @@
 ﻿namespace Bejebeje.Identity.Services
 {
-  using Bejebeje.Identity.Configuration;
-  using Bejebeje.Identity.Data;
-  using Bejebeje.Identity.Models;
+  using Configuration;
+  using Data;
+  using Models;
   using Microsoft.AspNetCore.Identity;
   using Microsoft.EntityFrameworkCore;
   using Microsoft.Extensions.Logging;
@@ -27,7 +27,7 @@
       ILogger<DataSeederService> logger
       )
     {
-      this.seedConfiguration = initialSeedConfiguration.Value;
+      seedConfiguration = initialSeedConfiguration.Value;
       this.context = context;
       this.userManager = userManager;
       this.logger = logger;
@@ -35,6 +35,8 @@
 
     public async Task SeedDataAsync()
     {
+      Console.WriteLine("Seeding the database.");
+
       await context.Database.MigrateAsync();
 
       BejebejeUser seedUser = await userManager

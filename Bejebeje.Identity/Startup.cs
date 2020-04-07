@@ -5,16 +5,16 @@
   using Microsoft.AspNetCore.Hosting;
   using Microsoft.AspNetCore.Mvc;
   using Microsoft.EntityFrameworkCore;
-  using Bejebeje.Identity.Data;
+  using Data;
   using Microsoft.Extensions.Configuration;
   using Microsoft.Extensions.DependencyInjection;
-  using Bejebeje.Identity.Models;
-  using Bejebeje.Identity.Configuration;
+  using Models;
+  using Configuration;
   using System.Reflection;
   using System.Linq;
   using IdentityServer4.EntityFramework.DbContexts;
   using IdentityServer4.EntityFramework.Mappers;
-  using Bejebeje.Identity.Services;
+  using Services;
   using System;
   using Microsoft.Extensions.Hosting;
 
