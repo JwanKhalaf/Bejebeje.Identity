@@ -1,6 +1,6 @@
 ﻿namespace Bejebeje.Identity
 {
-  using Bejebeje.Identity.Services;
+  using Services;
   using Microsoft.AspNetCore.Hosting;
   using Microsoft.Extensions.DependencyInjection;
   using Microsoft.Extensions.Hosting;
@@ -43,7 +43,8 @@
           AsyncRetryPolicy retryPolicy = Policy
             .Handle<SocketException>()
             .Or<PostgresException>()
-            .RetryAsync(10);
+            .Or<NpgsqlException>()
+            .RetryAsync(30);
 
           await retryPolicy.ExecuteAsync(() => dataSeederService.SeedDataAsync());
         }
