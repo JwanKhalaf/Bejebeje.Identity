@@ -143,7 +143,7 @@
       };
 
       forwardedHeadersOptions.KnownNetworks.Clear();
-      forwardedHeadersOptions.KnownProxies.Add(IPAddress.Parse("::ffff:172.19.0.1"));
+      forwardedHeadersOptions.KnownProxies.Add(IPAddress.Parse("::ffff:172.20.0.1"));
 
       app.UseForwardedHeaders(forwardedHeadersOptions);
 
