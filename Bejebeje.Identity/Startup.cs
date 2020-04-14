@@ -16,6 +16,8 @@
   using IdentityServer4.EntityFramework.Mappers;
   using Services;
   using System;
+  using System.Net;
+  using Microsoft.AspNetCore.HttpOverrides;
   using Microsoft.Extensions.Hosting;
 
   public class Startup
@@ -135,6 +137,13 @@
 
     public void Configure(IApplicationBuilder app)
     {
+      ForwardedHeadersOptions forwardedHeadersOptions = new ForwardedHeadersOptions
+      {
+        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+      };
+
+      app.UseForwardedHeaders(forwardedHeadersOptions);
+
       InitializeDatabase(app);
 
       if (Environment.IsDevelopment())

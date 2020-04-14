@@ -93,9 +93,9 @@
           RequireConsent = false,
           RequirePkce = true,
           // where to redirect to after login
-          RedirectUris = { "https://localhost:5015/signin-oidc" },
+          RedirectUris = { "http://localhost:5015/signin-oidc" },
           // where to redirect to after logout
-          PostLogoutRedirectUris = { "https://localhost:5015/signout-callback-oidc" },
+          PostLogoutRedirectUris = { "http://localhost:5015/signout-callback-oidc" },
           AllowedScopes = new List<string>
           {
             IdentityServerConstants.StandardScopes.OpenId,

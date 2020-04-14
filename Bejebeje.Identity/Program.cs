@@ -26,7 +26,7 @@
       if (seedIsRequested)
       {
         args = args
-          .Except(new string[] { possibleSeedArgument })
+          .Except(new[] { possibleSeedArgument })
           .ToArray();
       }
 
