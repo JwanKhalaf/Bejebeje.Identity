@@ -142,6 +142,9 @@
         ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
       };
 
+      forwardedHeadersOptions.KnownNetworks.Clear();
+      forwardedHeadersOptions.KnownProxies.Add(IPAddress.Parse("::ffff:172.19.0.1"));
+
       app.UseForwardedHeaders(forwardedHeadersOptions);
 
       InitializeDatabase(app);
