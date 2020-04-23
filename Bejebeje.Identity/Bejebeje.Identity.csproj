@@ -1,17 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UserSecretsId>bejebeje.identity-831fc03a-05f7-4bfd-bd71-ce144b091dfb</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
-
   <ItemGroup>
     <PackageReference Include="IdentityServer4" Version="3.0.1" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="3.0.1" />
     <PackageReference Include="IdentityServer4.EntityFramework" Version="3.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -21,25 +20,20 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.0.0" />
     <PackageReference Include="Polly" Version="7.1.1" />
     <PackageReference Include="RazorLight" Version="2.0.0-beta1" />
-
     <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
   </ItemGroup>
 
-
   <ItemGroup>
-    <Content Update="EmailTemplates\ForgotPassword.cshtml">
+    <Content Update="EmailTemplates\*.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="EmailTemplates\Registration.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
 
   <Target Name="MyPreCompileTarget" BeforeTargets="Build">
     <Exec Command="npx gulp default" />
   </Target>
-
 </Project>
