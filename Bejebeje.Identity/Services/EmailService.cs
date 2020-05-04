@@ -32,14 +32,16 @@ namespace Bejebeje.Identity.Services
     {
       string emailTemplateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EmailTemplates");
 
-      string reportEmailTemplatePath = Path.Combine(emailTemplateFolderPath, "Registration.cshtml");
+      string registrationEmailTemplatePath = Path.Combine(emailTemplateFolderPath, "Registration.cshtml");
+
+      Console.WriteLine($"The registration email template path is: {registrationEmailTemplatePath}");
 
       RazorLightEngine engine = new RazorLightEngineBuilder()
         .UseFilesystemProject(emailTemplateFolderPath)
         .UseMemoryCachingProvider()
         .Build();
 
-      string emailHtmlBody = await engine.CompileRenderAsync(reportEmailTemplatePath, emailViewModel);
+      string emailHtmlBody = await engine.CompileRenderAsync(registrationEmailTemplatePath, emailViewModel);
 
       MailMessage mailMessage = new MailMessage(
         emailViewModel.UserEmailAddress,
