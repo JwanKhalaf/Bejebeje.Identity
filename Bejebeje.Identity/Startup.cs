@@ -39,10 +39,6 @@
       string migrationAssemblyName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
       services
-        .AddRazorPages()
-        .AddRazorRuntimeCompilation();
-
-      services
           .AddDbContext<ApplicationDbContext>(options => options
             .UseNpgsql(databaseConnectionString));
 
