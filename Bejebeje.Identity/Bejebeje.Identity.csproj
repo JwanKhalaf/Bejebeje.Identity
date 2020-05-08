@@ -26,9 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="EmailTemplates\*.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Update="EmailTemplates\*.cshtml" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
   <ItemGroup>

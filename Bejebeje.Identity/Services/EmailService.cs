@@ -1,23 +1,29 @@
-using System.Threading.Tasks;
-using System.Net;
-using System.Net.Mail;
-using RazorLight;
-using Microsoft.Extensions.Options;
-using Bejebeje.Identity.ViewModels;
-using Bejebeje.Identity.Configuration;
-using System.IO;
-using System;
-
 namespace Bejebeje.Identity.Services
 {
+  using System.Threading.Tasks;
+  using System.Net;
+  using System.Net.Mail;
+  using RazorLight;
+  using Microsoft.Extensions.Options;
+  using ViewModels;
+  using Configuration;
+  using System.IO;
+  using System;
+  using Microsoft.AspNetCore.Hosting;
+
   public class EmailService : IEmailService
   {
-    private EmailConfiguration _emailConfiguration;
+    private readonly IWebHostEnvironment _environment;
+
+    private readonly EmailConfiguration _emailConfiguration;
 
     private readonly SmtpClient _smtpClient;
 
-    public EmailService(IOptions<EmailConfiguration> emailConfiguration)
+    public EmailService(
+      IOptions<EmailConfiguration> emailConfiguration,
+      IWebHostEnvironment environment)
     {
+      _environment = environment;
       _emailConfiguration = emailConfiguration.Value;
       _smtpClient = new SmtpClient(_emailConfiguration.SmtpHost, _emailConfiguration.SmtpPort);
 
@@ -30,7 +36,7 @@ namespace Bejebeje.Identity.Services
 
     public async Task SendRegistrationEmailAsync(EmailRegistrationViewModel emailViewModel)
     {
-      string emailTemplateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EmailTemplates");
+      string emailTemplateFolderPath = Path.Combine(_environment.ContentRootPath, "EmailTemplates");
 
       string registrationEmailTemplatePath = Path.Combine(emailTemplateFolderPath, "Registration.cshtml");
 
@@ -56,7 +62,7 @@ namespace Bejebeje.Identity.Services
 
     public async Task SendForgotPasswordEmailAsync(EmailForgotPasswordViewModel emailViewModel)
     {
-      string emailTemplateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EmailTemplates");
+      string emailTemplateFolderPath = Path.Combine(_environment.ContentRootPath, "EmailTemplates");
 
       string reportEmailTemplatePath = Path.Combine(emailTemplateFolderPath, "ForgotPassword.cshtml");
 
