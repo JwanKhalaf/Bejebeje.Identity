@@ -16,7 +16,6 @@
   using IdentityServer4.EntityFramework.Mappers;
   using Services;
   using System;
-  using System.Net;
   using Microsoft.AspNetCore.HttpOverrides;
   using Microsoft.Extensions.Hosting;
 
@@ -33,7 +32,7 @@
       Configuration = configuration;
       Environment = environment;
     }
-   
+
     public void ConfigureServices(IServiceCollection services)
     {
       string databaseConnectionString = Configuration["Database:DefaultConnectionString"];
