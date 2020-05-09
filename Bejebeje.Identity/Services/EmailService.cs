@@ -57,7 +57,9 @@ namespace Bejebeje.Identity.Services
 
       mailMessage.IsBodyHtml = true;
 
-      SendEmail(mailMessage);
+      string operationIdentity = "Registration email";
+
+      SendEmailAsync(mailMessage, operationIdentity);
     }
 
     public async Task SendForgotPasswordEmailAsync(EmailForgotPasswordViewModel emailViewModel)
@@ -81,12 +83,14 @@ namespace Bejebeje.Identity.Services
 
       mailMessage.IsBodyHtml = true;
 
-      SendEmail(mailMessage);
+      string operationIdentity = "Forgotten password email";
+
+      SendEmailAsync(mailMessage, operationIdentity);
     }
 
-    private void SendEmail(MailMessage mailMessage)
+    private void SendEmailAsync(MailMessage mailMessage, string operationIdentity)
     {
-      _smtpClient.Send(mailMessage);
+      _smtpClient.SendAsync(mailMessage, operationIdentity);
     }
   }
 }
