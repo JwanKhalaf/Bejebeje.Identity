@@ -50,9 +50,9 @@ namespace Bejebeje.Identity.Services
       string emailHtmlBody = await engine.CompileRenderAsync(registrationEmailTemplatePath, emailViewModel);
 
       MailMessage mailMessage = new MailMessage(
-        emailViewModel.UserEmailAddress,
         _emailConfiguration.OutgoingEmailAddress,
-        "Welcome to Bejebeje",
+        emailViewModel.UserEmailAddress,
+        "Welcome to Bêjebêje",
         emailHtmlBody);
 
       mailMessage.IsBodyHtml = true;
