@@ -1,27 +1,26 @@
-﻿using IdentityModel;
-using IdentityServer4.Events;
-using IdentityServer4.Extensions;
-using IdentityServer4.Models;
-using IdentityServer4.Services;
-using IdentityServer4.Stores;
-using Bejebeje.Identity.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Bejebeje.Identity.Filters;
-using Bejebeje.Identity.ViewModels;
-using Bejebeje.Identity.Extensions;
-using Bejebeje.Identity.Options;
-using Bejebeje.Identity.Services;
-using System.Collections.Generic;
-
-namespace Bejebeje.Identity.Controllers
+﻿namespace Bejebeje.Identity.Controllers
 {
+  using IdentityModel;
+  using IdentityServer4.Events;
+  using IdentityServer4.Extensions;
+  using IdentityServer4.Models;
+  using IdentityServer4.Services;
+  using IdentityServer4.Stores;
+  using Models;
+  using Microsoft.AspNetCore.Authentication;
+  using Microsoft.AspNetCore.Authorization;
+  using Microsoft.AspNetCore.Identity;
+  using Microsoft.AspNetCore.Mvc;
+  using System;
+  using System.Linq;
+  using System.Threading.Tasks;
+  using Filters;
+  using ViewModels;
+  using Extensions;
+  using Options;
+  using Services;
+  using System.Collections.Generic;
+
   [SecurityHeaders]
   [AllowAnonymous]
   public class AccountController : Controller
@@ -93,7 +92,7 @@ namespace Bejebeje.Identity.Controllers
 
           await _signInManager.SignInAsync(user, isPersistent: false);
 
-          return Redirect("https://bejebeje.com");
+          return View("ConfirmRegistration");
         }
 
         foreach (IdentityError error in result.Errors)
@@ -127,7 +126,7 @@ namespace Bejebeje.Identity.Controllers
         throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
       }
 
-      return RedirectToAction("Index", "Home");
+      return View("EmailConfirmed");
     }
 
     /// <summary>

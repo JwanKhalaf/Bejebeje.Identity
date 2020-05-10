@@ -4857,3 +4857,9 @@ a.navbar-item,
 
 .label {
   color: #5b5b5b; }
+
+.is-dark-bb-background {
+  background-color: #292c37; }
+
+a.is-primary:hover {
+  color: #d84446; }
