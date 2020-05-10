@@ -32,3 +32,11 @@
 .label {
   color: #5b5b5b;
 }
+
+.is-dark-bb-background {
+  background-color: $bb-dark-grey;
+}
+
+a.is-primary:hover {
+  color: lighten($bb-red, 10%);
+}
