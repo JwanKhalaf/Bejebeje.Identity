@@ -16,7 +16,9 @@
   using IdentityServer4.EntityFramework.Mappers;
   using Services;
   using System;
+  using Joonasw.AspNetCore.SecurityHeaders;
   using Microsoft.AspNetCore.HttpOverrides;
+  using Microsoft.AspNetCore.StaticFiles;
   using Microsoft.Extensions.Hosting;
 
   public class Startup
@@ -157,17 +159,26 @@
         app.UseExceptionHandler("/Home/Error");
       }
 
-      app.UseStaticFiles();
+      FileExtensionContentTypeProvider fileExtensionContentTypeProvider = new FileExtensionContentTypeProvider();
+
+      fileExtensionContentTypeProvider.Mappings[".webmanifest"] = "application/manifest+json";
+
+      app.UseStaticFiles(new StaticFileOptions()
+      {
+        ContentTypeProvider = fileExtensionContentTypeProvider
+      });
+
+      app.UseCsp(csp =>
+      {
+        csp.AllowFonts
+          .FromSelf()
+          .From("fonts.googleapis.com")
+          .From("fonts.gstatic.com");
+      });
 
       app.UseRouting();
 
       app.UseIdentityServer();
-
-      app.Use(async (httpContent, next) =>
-      {
-        httpContent.Response.Headers.Add("Content-Security-Policy", "default-src 'self' *.googleapis.com *.gstatic.com; report-uri /cspreport");
-        await next();
-      });
 
       app.UseEndpoints(endpoints =>
       {
