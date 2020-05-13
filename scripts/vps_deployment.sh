@@ -1,6 +1,6 @@
 echo "Current working directory is:"
 pwd
-cd /var/www/html/identity.bejebeje.com/
+cd /var/www/html/login.bejebeje.com/
 echo "Now the current working directory is:"
 pwd
 echo "running docker-compose down"
