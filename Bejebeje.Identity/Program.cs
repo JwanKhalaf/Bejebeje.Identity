@@ -44,7 +44,7 @@
             .Handle<SocketException>()
             .Or<PostgresException>()
             .Or<NpgsqlException>()
-            .RetryAsync(30);
+            .RetryAsync(100);
 
           await retryPolicy.ExecuteAsync(() => dataSeederService.SeedDataAsync());
         }

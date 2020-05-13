@@ -53,21 +53,6 @@
         },
         new Client
         {
-          ClientId = "bejebeje-react-local",
-          ClientName = "Bejebeje ReactJS SPA Client",
-          AllowedGrantTypes = GrantTypes.Code,
-          RequirePkce = true,
-          RequireClientSecret = false,
-          RequireConsent = false,
-          RedirectUris = { "http://localhost:1234/login-callback" },
-          PostLogoutRedirectUris = { "http://localhost:1234/logout-callback" },
-          AllowedCorsOrigins = { "http://localhost:1234" },
-          AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, "bejebeje-api-local" },
-          AllowOfflineAccess = true,
-          RefreshTokenUsage = TokenUsage.ReUse,
-        },
-        new Client
-        {
           ClientId = IdentityServerConfiguration.AdminClientId,
           ClientName = "bejebeje admin mvc client",
           ClientSecrets = { new Secret(IdentityServerConfiguration.AdminClientSecret.Sha256()) },
@@ -82,25 +67,7 @@
           {
             IdentityServerConstants.StandardScopes.OpenId,
             IdentityServerConstants.StandardScopes.Profile
-          }
-        },
-        new Client
-        {
-          ClientId = "bejebeje-admin-mvc-local",
-          ClientName = "bejebeje admin mvc client",
-          ClientSecrets = { new Secret("secret".Sha256()) },
-          AllowedGrantTypes = GrantTypes.Code,
-          RequireConsent = false,
-          RequirePkce = true,
-          // where to redirect to after login
-          RedirectUris = { "http://localhost:5015/signin-oidc" },
-          // where to redirect to after logout
-          PostLogoutRedirectUris = { "http://localhost:5015/signout-callback-oidc" },
-          AllowedScopes = new List<string>
-          {
-            IdentityServerConstants.StandardScopes.OpenId,
-            IdentityServerConstants.StandardScopes.Profile
-          }
+          },
         },
       };
     }
