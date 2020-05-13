@@ -136,8 +136,12 @@
         .AddScoped<IEmailService, EmailService>();
     }
 
-    public void Configure(IApplicationBuilder app)
+    public void Configure(
+      IApplicationBuilder app,
+      ApplicationDbContext context)
     {
+      context.Database.Migrate();
+
       ForwardedHeadersOptions forwardedHeadersOptions = new ForwardedHeadersOptions
       {
         ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
