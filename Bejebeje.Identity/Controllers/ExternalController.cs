@@ -110,7 +110,7 @@ namespace Bejebeje.Identity.Controllers
       var localSignInProps = new AuthenticationProperties();
       ProcessLoginCallbackForOidc(result, additionalLocalClaims, localSignInProps);
       ProcessLoginCallbackForWsFed(result, additionalLocalClaims, localSignInProps);
-      ProcessLoginCallbackForSaml2p(result, additionalLocalClaims, localSignInProps);
+      ProcessLoginCallbackForSaml2P(result, additionalLocalClaims, localSignInProps);
 
       // issue authentication cookie for user
       // we must issue the cookie maually, and can't use the SignInManager because
@@ -277,10 +277,10 @@ namespace Bejebeje.Identity.Controllers
       }
 
       // if the external provider issued an id_token, we'll keep it for signout
-      var id_token = externalResult.Properties.GetTokenValue("id_token");
-      if (id_token != null)
+      var idToken = externalResult.Properties.GetTokenValue("id_token");
+      if (idToken != null)
       {
-        localSignInProps.StoreTokens(new[] { new AuthenticationToken { Name = "id_token", Value = id_token } });
+        localSignInProps.StoreTokens(new[] { new AuthenticationToken { Name = "id_token", Value = idToken } });
       }
     }
 
@@ -288,7 +288,7 @@ namespace Bejebeje.Identity.Controllers
     {
     }
 
-    private void ProcessLoginCallbackForSaml2p(AuthenticateResult externalResult, List<Claim> localClaims, AuthenticationProperties localSignInProps)
+    private void ProcessLoginCallbackForSaml2P(AuthenticateResult externalResult, List<Claim> localClaims, AuthenticationProperties localSignInProps)
     {
     }
   }

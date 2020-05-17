@@ -217,7 +217,7 @@ namespace Bejebeje.Identity.Controllers
       vm.ResourceScopes = resources.ApiResources.SelectMany(x => x.Scopes).Select(x => CreateScopeViewModel(x, vm.ScopesConsented.Contains(x.Name) || model == null)).ToArray();
       if (ConsentOptions.EnableOfflineAccess && resources.OfflineAccess)
       {
-        vm.ResourceScopes = vm.ResourceScopes.Union(new ScopeViewModel[] {
+        vm.ResourceScopes = vm.ResourceScopes.Union(new[] {
                     GetOfflineAccessScope(vm.ScopesConsented.Contains(IdentityServer4.IdentityServerConstants.StandardScopes.OfflineAccess) || model == null)
                 });
       }
