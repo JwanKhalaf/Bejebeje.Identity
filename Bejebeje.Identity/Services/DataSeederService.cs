@@ -12,59 +12,105 @@
 
   public class DataSeederService : IDataSeederService
   {
-    private InitialSeedConfiguration seedConfiguration { get; set; }
+    private InitialSeedConfiguration SeedConfiguration { get; }
 
-    private ApplicationDbContext context;
+    private readonly ApplicationDbContext _context;
 
-    private UserManager<BejebejeUser> userManager;
+    private readonly UserManager<BejebejeUser> _userManager;
 
-    private ILogger<DataSeederService> logger;
+    private readonly RoleManager<IdentityRole> _roleManager;
+
+    private readonly ILogger<DataSeederService> _logger;
 
     public DataSeederService(
       IOptions<InitialSeedConfiguration> initialSeedConfiguration,
       ApplicationDbContext context,
       UserManager<BejebejeUser> userManager,
+      RoleManager<IdentityRole> roleManager,
       ILogger<DataSeederService> logger
       )
     {
-      seedConfiguration = initialSeedConfiguration.Value;
-      this.context = context;
-      this.userManager = userManager;
-      this.logger = logger;
+      SeedConfiguration = initialSeedConfiguration.Value;
+      _context = context;
+      _userManager = userManager;
+      _roleManager = roleManager;
+      _logger = logger;
     }
 
     public async Task SeedDataAsync()
     {
       Console.WriteLine("Seeding the database.");
 
-      await context.Database.MigrateAsync();
+      await _context.Database.MigrateAsync();
 
-      BejebejeUser seedUser = await userManager
-            .FindByNameAsync(seedConfiguration.Username);
+      IdentityRole adminRole = await _roleManager.FindByNameAsync("administrator");
 
-      if (seedUser == null)
+      if (adminRole == null)
       {
-        seedUser = new BejebejeUser
-        {
-          UserName = seedConfiguration.Username,
-          Email = seedConfiguration.Email,
-          EmailConfirmed = true,
-          DisplayUsername = seedConfiguration.FirstName
-        };
+        adminRole = new IdentityRole("administrator");
 
-        IdentityResult identityResult = await userManager
-          .CreateAsync(seedUser, seedConfiguration.Password);
+        IdentityResult identityResult = await _roleManager.CreateAsync(adminRole);
 
         if (!identityResult.Succeeded)
         {
           throw new Exception(identityResult.ToString());
         }
 
-        logger.LogInformation($"{seedConfiguration.Username} created");
+        _logger.LogInformation("created the administrator role.");
+      }
+
+      IdentityRole moderatorRole = await _roleManager.FindByNameAsync("moderator");
+
+      if (moderatorRole == null)
+      {
+        moderatorRole = new IdentityRole("moderator");
+
+        IdentityResult identityResult = await _roleManager.CreateAsync(moderatorRole);
+
+        if (!identityResult.Succeeded)
+        {
+          throw new Exception(identityResult.ToString());
+        }
+
+        _logger.LogInformation("created the moderator role.");
+      }
+
+      BejebejeUser seedUser = await _userManager
+            .FindByNameAsync(SeedConfiguration.Username);
+
+      if (seedUser == null)
+      {
+        seedUser = new BejebejeUser
+        {
+          UserName = SeedConfiguration.Username,
+          Email = SeedConfiguration.Email,
+          EmailConfirmed = true,
+          DisplayUsername = SeedConfiguration.FirstName
+        };
+
+        IdentityResult identityResult = await _userManager
+          .CreateAsync(seedUser, SeedConfiguration.Password);
+
+        if (!identityResult.Succeeded)
+        {
+          throw new Exception(identityResult.ToString());
+        }
+
+        _logger.LogInformation($"{SeedConfiguration.Username} created");
+
+        IdentityResult identityResultOnRoleAssignment = await _userManager
+          .AddToRoleAsync(seedUser, "administrator");
+
+        if (!identityResultOnRoleAssignment.Succeeded)
+        {
+          throw new Exception(identityResultOnRoleAssignment.ToString());
+        }
+
+        _logger.LogInformation("assigned seed user to administrator role.");
       }
       else
       {
-        logger.LogError($"{seedConfiguration.Username} already exists");
+        _logger.LogError($"{SeedConfiguration.Username} already exists");
       }
     }
   }

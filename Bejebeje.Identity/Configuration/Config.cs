@@ -25,7 +25,7 @@
 
     public IEnumerable<ApiResource> GetApis()
     {
-      return new ApiResource[]
+      return new[]
       {
         new ApiResource(IdentityServerConfiguration.ApiName, "Bejebeje API"),
         new ApiResource("bejebeje-api-local", "Bejebeje API")

@@ -45,10 +45,10 @@ namespace Bejebeje.Identity.Filters
         }
 
         // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
-        var referrer_policy = "no-referrer";
+        var referrerPolicy = "no-referrer";
         if (!context.HttpContext.Response.Headers.ContainsKey("Referrer-Policy"))
         {
-          context.HttpContext.Response.Headers.Add("Referrer-Policy", referrer_policy);
+          context.HttpContext.Response.Headers.Add("Referrer-Policy", referrerPolicy);
         }
       }
     }
