@@ -127,7 +127,8 @@
           options.EnableTokenCleanup = true;
         })
         .AddDeveloperSigningCredential()
-        .AddAspNetIdentity<BejebejeUser>();
+        .AddAspNetIdentity<BejebejeUser>()
+        .AddProfileService<ProfileService>();
 
       services
         .AddAuthentication();
