@@ -85,7 +85,7 @@
           UserName = SeedConfiguration.Username,
           Email = SeedConfiguration.Email,
           EmailConfirmed = true,
-          DisplayUsername = SeedConfiguration.FirstName
+          DisplayUsername = SeedConfiguration.FirstName,
         };
 
         IdentityResult identityResult = await _userManager
