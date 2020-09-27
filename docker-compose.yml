@@ -17,7 +17,7 @@ services:
     volumes:
       - ~/.aspnet/https:/root/.aspnet/https/
   database:
-    image: postgres
+    image: postgres:13.0
     ports:
       - "8001:5432"
     volumes:
