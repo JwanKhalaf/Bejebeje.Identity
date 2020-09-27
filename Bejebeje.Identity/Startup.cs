@@ -104,7 +104,7 @@
 
         });
 
-      var builder = services
+      IIdentityServerBuilder builder = services
         .AddIdentityServer(options =>
         {
           options.Events.RaiseErrorEvents = true;
