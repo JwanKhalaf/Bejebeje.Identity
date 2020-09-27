@@ -192,6 +192,8 @@
 
         if (result.Succeeded)
         {
+          Console.WriteLine("User is logged in!");
+
           BejebejeUser user = await _userManager.FindByNameAsync(model.Username);
 
           await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));

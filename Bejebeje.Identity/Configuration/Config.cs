@@ -23,34 +23,10 @@
       };
     }
 
-    public IEnumerable<ApiResource> GetApis()
-    {
-      return new[]
-      {
-        new ApiResource(IdentityServerConfiguration.ApiName, "Bejebeje API"),
-        new ApiResource("bejebeje-api-local", "Bejebeje API")
-      };
-    }
-
     public IEnumerable<Client> GetClients()
     {
       return new[]
       {
-        new Client
-        {
-          ClientId = IdentityServerConfiguration.FrontendClientId,
-          ClientName = "Bejebeje ReactJS SPA Client",
-          AllowedGrantTypes = GrantTypes.Code,
-          RequirePkce = true,
-          RequireClientSecret = false,
-          RequireConsent = false,
-          RedirectUris = { "https://bejebeje.com/login-callback" },
-          PostLogoutRedirectUris = { "https://bejebeje.com/logout-callback" },
-          AllowedCorsOrigins = { "https://bejebeje.com" },
-          AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, IdentityServerConfiguration.ApiName },
-          AllowOfflineAccess = true,
-          RefreshTokenUsage = TokenUsage.ReUse,
-        },
         new Client
         {
           ClientId = IdentityServerConfiguration.AdminClientId,

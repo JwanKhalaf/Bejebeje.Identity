@@ -104,7 +104,7 @@
 
         });
 
-      var builder = services
+      IIdentityServerBuilder builder = services
         .AddIdentityServer(options =>
         {
           options.Events.RaiseErrorEvents = true;
@@ -223,15 +223,6 @@
           foreach (var resource in identityServerConfiguration.GetIdentityResources())
           {
             context.IdentityResources.Add(resource.ToEntity());
-          }
-          context.SaveChanges();
-        }
-
-        if (!context.ApiResources.Any())
-        {
-          foreach (var resource in identityServerConfiguration.GetApis())
-          {
-            context.ApiResources.Add(resource.ToEntity());
           }
           context.SaveChanges();
         }

@@ -8,11 +8,14 @@ services:
         com.bejebeje.description: "Bejebeje's Identity Server"
     image: bejebeje-identity:latest
     ports:
-      - "5005:5000"
+      - "50051:443"
+      - "5005:80"
     env_file:
       - ./variables.env
     depends_on:
       - database
+    volumes:
+      - ~/.aspnet/https:/root/.aspnet/https/
   database:
     image: postgres
     ports:
