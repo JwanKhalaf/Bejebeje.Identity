@@ -181,6 +181,8 @@
           .From("fonts.gstatic.com");
       });
 
+      app.UseHttpsRedirection();
+
       app.UseRouting();
 
       app.UseIdentityServer();
