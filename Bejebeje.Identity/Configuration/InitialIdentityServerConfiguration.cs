@@ -6,6 +6,10 @@ namespace Bejebeje.Identity.Configuration
 
     public string FrontendClientId { get; set; }
 
+    public string FrontendClientSecret { get; set; }
+
+    public string FrontendEndpoint { get; set; }
+
     public string AdminClientId { get; set; }
 
     public string AdminClientSecret { get; set; }

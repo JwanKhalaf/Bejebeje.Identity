@@ -29,6 +29,24 @@
       {
         new Client
         {
+          ClientId = IdentityServerConfiguration.FrontendClientId,
+          ClientName = "bejebeje frontend mvc client",
+          ClientSecrets = { new Secret(IdentityServerConfiguration.FrontendClientSecret.Sha256()) },
+          AllowedGrantTypes = GrantTypes.Code,
+          RequireConsent = false,
+          RequirePkce = true,
+          // where to redirect to after login
+          RedirectUris = { $"{IdentityServerConfiguration.FrontendEndpoint}/signin-oidc" },
+          // where to redirect to after logout
+          PostLogoutRedirectUris = { $"{IdentityServerConfiguration.FrontendEndpoint}/signout-callback-oidc" },
+          AllowedScopes = new List<string>
+          {
+            IdentityServerConstants.StandardScopes.OpenId,
+            IdentityServerConstants.StandardScopes.Profile,
+          },
+        },
+        new Client
+        {
           ClientId = IdentityServerConfiguration.AdminClientId,
           ClientName = "bejebeje admin mvc client",
           ClientSecrets = { new Secret(IdentityServerConfiguration.AdminClientSecret.Sha256()) },
