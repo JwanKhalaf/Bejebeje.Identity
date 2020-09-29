@@ -16,6 +16,7 @@
   using IdentityServer4.EntityFramework.Mappers;
   using Services;
   using System;
+  using IdentityServer4.Models;
   using Joonasw.AspNetCore.SecurityHeaders;
   using Microsoft.AspNetCore.HttpOverrides;
   using Microsoft.AspNetCore.StaticFiles;
@@ -195,39 +196,42 @@
 
     private void InitializeDatabase(IApplicationBuilder app)
     {
-      using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+      using IServiceScope serviceScope = app
+        .ApplicationServices
+        .GetService<IServiceScopeFactory>()
+        .CreateScope();
+
+      serviceScope
+        .ServiceProvider
+        .GetRequiredService<PersistedGrantDbContext>()
+        .Database
+        .Migrate();
+
+      ConfigurationDbContext context = serviceScope
+        .ServiceProvider
+        .GetRequiredService<ConfigurationDbContext>();
+
+      Config identityServerConfiguration = serviceScope.ServiceProvider.GetRequiredService<Config>();
+
+      context.Database.Migrate();
+
+      if (!context.Clients.Any())
       {
-        serviceScope
-          .ServiceProvider
-          .GetRequiredService<PersistedGrantDbContext>()
-          .Database
-          .Migrate();
-
-        var context = serviceScope
-          .ServiceProvider
-          .GetRequiredService<ConfigurationDbContext>();
-
-        Config identityServerConfiguration = serviceScope.ServiceProvider.GetRequiredService<Config>();
-
-        context.Database.Migrate();
-
-        if (!context.Clients.Any())
+        foreach (Client client in identityServerConfiguration.GetClients())
         {
-          foreach (var client in identityServerConfiguration.GetClients())
-          {
-            context.Clients.Add(client.ToEntity());
-          }
-          context.SaveChanges();
+          context.Clients.Add(client.ToEntity());
+        }
+        context.SaveChanges();
+      }
+
+      if (!context.IdentityResources.Any())
+      {
+        foreach (IdentityResource resource in identityServerConfiguration.GetIdentityResources())
+        {
+          context.IdentityResources.Add(resource.ToEntity());
         }
 
-        if (!context.IdentityResources.Any())
-        {
-          foreach (var resource in identityServerConfiguration.GetIdentityResources())
-          {
-            context.IdentityResources.Add(resource.ToEntity());
-          }
-          context.SaveChanges();
-        }
+        context.SaveChanges();
       }
     }
   }
