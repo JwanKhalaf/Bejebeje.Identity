@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/JwanKhalaf/Bejebeje.Identity.svg?branch=develop)](https://travis-ci.org/JwanKhalaf/Bejebeje.Identity)
-
 # Bejebeje.Identity
 
 This project handles authentication and authorization for resources relating to Bejebeje.
