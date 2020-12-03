@@ -6,9 +6,7 @@ const rimraf = require("rimraf");
 const concat = require("gulp-concat");
 const cssmin = require("gulp-cssmin");
 const uglify = require("gulp-uglify");
-const sass = require("gulp-sass");
-
-sass.compiler = require("node-sass");
+const sass = require("gulp-dart-sass");
 
 const paths = {
   webroot: "./wwwroot/"
