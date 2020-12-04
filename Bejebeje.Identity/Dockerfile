@@ -21,7 +21,7 @@ COPY . ./
 RUN apt-get update -yq && apt-get upgrade -yq
 
 # download node
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 
 # install nodejs
 RUN apt-get install -y nodejs
@@ -32,11 +32,11 @@ RUN node --version
 # list files
 RUN ls -la
 
+# install dart sass
+RUN npm install -g sass
+
 # we run npm for the gulp minification and sass compilation
 RUN npm install
-
-# rebuild node-sass
-RUN npm rebuild node-sass
 
 # install gulp-cli globally
 RUN npm install gulp-cli -g
