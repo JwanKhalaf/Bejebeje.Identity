@@ -22,7 +22,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: Bejebeje.Identity/Dockerfile
+          file: ./Bejebeje.Identity/Dockerfile
           push: true
           tags: latest
       - name: image digest
