@@ -7,7 +7,7 @@ WORKDIR /app
 
 # remember, our current working directory within the container is /app
 # we now copy the .csproj file (from local machine) to /app (in the container).
-COPY *.csproj ./
+COPY ./Bejebeje.Identity/*.csproj ./
 
 # on the container (we are in /app folder) we restore the project to get
 # all the referenced nuget packages.
