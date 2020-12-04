@@ -7,7 +7,7 @@ WORKDIR /app
 
 # remember, our current working directory within the container is /app
 # we now copy the .csproj file (from local machine) to /app (in the container).
-COPY ./*.csproj ./
+COPY ./Bejebeje.Identity/*.csproj ./
 
 # on the container (we are in /app folder) we restore the project to get
 # all the referenced nuget packages.
@@ -43,7 +43,7 @@ RUN npm install gulp-cli -g
 
 # and again, on the container (we are in /app folder)
 # we now publish the project into a folder called 'out'.
-RUN dotnet publish Bejebeje.Identity.csproj -c Release -o out
+RUN dotnet publish ./Bejebeje.Identity/Bejebeje.Identity.csproj -c Release -o out
 
 # set base image as the dotnet 2.2 runtime.
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.0 AS runtime
