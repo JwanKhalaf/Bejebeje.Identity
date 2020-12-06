@@ -27,5 +27,3 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: latest
-      - name: image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
