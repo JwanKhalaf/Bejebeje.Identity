@@ -39,7 +39,7 @@ RUN npm install -g sass
 RUN npm install gulp-cli -g
 
 # we run npm for the gulp minification and sass compilation
-RUN npm install
+RUN npm install --prefix ./Bejebeje.Identity/
 
 # and again, on the container (we are in /app folder)
 # we now publish the project into a folder called 'out'.
