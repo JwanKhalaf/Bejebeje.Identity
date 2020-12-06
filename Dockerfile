@@ -35,11 +35,11 @@ RUN ls -la
 # install dart sass
 RUN npm install -g sass
 
-# we run npm for the gulp minification and sass compilation
-RUN npm install
-
 # install gulp-cli globally
 RUN npm install gulp-cli -g
+
+# we run npm for the gulp minification and sass compilation
+RUN npm install
 
 # and again, on the container (we are in /app folder)
 # we now publish the project into a folder called 'out'.

@@ -6,7 +6,7 @@ services:
       context: ./Bejebeje.Identity
       labels:
         com.bejebeje.description: "Bejebeje's Identity Server"
-    image: bejebeje-identity:latest
+    image: bejebeje/identity:latest
     ports:
       - "5006:443"
       - "5005:80"
