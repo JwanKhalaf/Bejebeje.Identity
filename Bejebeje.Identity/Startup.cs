@@ -105,7 +105,7 @@
 
         });
 
-      IIdentityServerBuilder builder = services
+      services
         .AddIdentityServer(options =>
         {
           options.Events.RaiseErrorEvents = true;
@@ -163,6 +163,8 @@
       else
       {
         app.UseExceptionHandler("/Home/Error");
+
+        HstsBuilderExtensions.UseHsts(app);
       }
 
       FileExtensionContentTypeProvider fileExtensionContentTypeProvider = new FileExtensionContentTypeProvider();
