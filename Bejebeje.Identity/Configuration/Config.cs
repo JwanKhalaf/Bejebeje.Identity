@@ -44,6 +44,10 @@
             IdentityServerConstants.StandardScopes.OpenId,
             IdentityServerConstants.StandardScopes.Profile,
           },
+          AllowedCorsOrigins = new List<string>
+          {
+            IdentityServerConfiguration.FrontendEndpoint
+          },
         },
         new Client
         {
