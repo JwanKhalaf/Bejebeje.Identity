@@ -2,55 +2,57 @@
 
 <div class="columns is-gapless">
   <div class="column is-fullheight-universal is-two-fifths is-flex is-vertically-centred is-horizontally-centred">
-    <div class="container is-fluid">
-      <div class="logo">
-        <a href="https://bejebeje.com">
-          <img src="~/images/bejebeje-logo.svg" alt="bejebeje's logo" class="bejebeje-logo" />
-        </a>
+    <div class="section">
+      <div class="container is-fluid">
+        <div class="logo">
+          <a href="https://bejebeje.com">
+            <img src="~/images/bejebeje-logo.svg" alt="bejebeje's logo" class="bejebeje-logo" />
+          </a>
+        </div>
+
+        <form method="post">
+          <div asp-validation-summary="All" class="notification is-danger"></div>
+
+          <div class="field">
+            <label class="label" asp-for="Username"></label>
+            <div class="control">
+              <input asp-for="Username" class="input is-medium" />
+              <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" asp-for="Email"></label>
+            <div class="control">
+              <input asp-for="Email" class="input is-medium" />
+              <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" asp-for="Password"></label>
+            <div class="control">
+              <input asp-for="Password" class="input is-medium" />
+              <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" asp-for="ConfirmPassword"></label>
+            <div class="control">
+              <input asp-for="ConfirmPassword" class="input is-medium" />
+              <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+          </div>
+
+          <div class="field">
+            <button type="submit" class="button is-primary is-medium">Register</button>
+            <a asp-action="Login" asp-controller="Account" class="button is-text is-medium">Back to login</a>
+          </div>
+        </form>
+
+        <p class="is-size-6">B&ecirc;jeb&ecirc;je &copy; 2015 - @DateTime.Now.Year.ToString(). All Rights Reserved.</p>
       </div>
-
-      <form method="post">
-        <div asp-validation-summary="All" class="notification is-danger"></div>
-
-        <div class="field">
-          <label class="label" asp-for="Username"></label>
-          <div class="control">
-            <input asp-for="Username" class="input is-medium" />
-            <span asp-validation-for="Username" class="text-danger"></span>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label" asp-for="Email"></label>
-          <div class="control">
-            <input asp-for="Email" class="input is-medium" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label" asp-for="Password"></label>
-          <div class="control">
-            <input asp-for="Password" class="input is-medium" />
-            <span asp-validation-for="Password" class="text-danger"></span>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label" asp-for="ConfirmPassword"></label>
-          <div class="control">
-            <input asp-for="ConfirmPassword" class="input is-medium" />
-            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-          </div>
-        </div>
-
-        <div class="field">
-          <button type="submit" class="button is-primary is-medium">Register</button>
-          <a asp-action="Login" asp-controller="Account" class="button is-text is-medium">Back to login</a>
-        </div>
-      </form>
-
-      <p class="is-size-6">B&ecirc;jeb&ecirc;je &copy; 2015 - @DateTime.Now.Year.ToString(). All Rights Reserved.</p>
     </div>
   </div>
   <div class="column is-hidden-touch">
